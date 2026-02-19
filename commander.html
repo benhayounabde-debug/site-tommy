@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boutique - Tommy 3D</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Barre d'annonce -->
+    <div class="announcement-bar">
+        <p>🚀 Livraison rapide en 3-5 jours ouvrés | <span class="highlight">-10% avec le code BIENVENUE</span></p>
+    </div>
+
+    <!-- Navigation -->
+    <header class="header">
+        <nav class="nav container">
+            <a href="index.html" class="logo">Tommy<span>3D</span></a>
+            <button class="mobile-menu-btn" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="lightbox.html">Créer ma Lightbox</a></li>
+                <li><a href="commander.html" class="active">Boutique</a></li>
+                <li><a href="mes-commandes.html">Mes Commandes</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="contact.html" class="btn btn-primary">Nous contacter</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <span class="section-badge">Collection</span>
+            <h1>Nos Créations 3D</h1>
+            <p>Découvrez toutes nos créations uniques imprimées en 3D avec passion</p>
+        </div>
+    </section>
+
+    <!-- Shop Section -->
+    <section class="shop-section">
+        <div class="container">
+            <!-- Category: Déco Maison -->
+            <div class="shop-category">
+                <div class="section-header" style="margin-bottom: 40px;">
+                    <h2>🏠 Décoration Maison</h2>
+                    <p>Objets décoratifs uniques pour sublimer votre intérieur</p>
+                </div>
+                <div class="shop-grid">
+                    <div class="product-detail-card">
+                        <div class="product-detail-image product-carousel" data-carousel="vase">
+                            <div class="carousel-container">
+                                <div class="carousel-slides">
+                                    <img src="vase-geometrique-1.png" alt="Vase Géométrique" class="carousel-slide active">
+                                    <img src="vase-geometrique-2.png" alt="Vase Géométrique vue 2" class="carousel-slide">
+                                </div>
+                            </div>
+                            <button class="carousel-btn carousel-prev" onclick="changeSlide('vase', -1)">‹</button>
+                            <button class="carousel-btn carousel-next" onclick="changeSlide('vase', 1)">›</button>
+                            <div class="carousel-dots">
+                                <span class="dot active" onclick="goToSlide('vase', 0)"></span>
+                                <span class="dot" onclick="goToSlide('vase', 1)"></span>
+                            </div>
+                            <span class="product-badge">Populaire</span>
+                        </div>
+                        <div class="product-detail-info">
+                            <h3>Vase Géométrique</h3>
+                            <p class="description">Vase moderne aux formes géométriques, parfait pour vos fleurs séchées ou comme pièce décorative. Imprimé avec une résolution fine pour un rendu lisse et détaillé.</p>
+                            <ul class="product-features">
+                                <li>Filament PLA+ haute qualité</li>
+                                <li>Buse 0.4 mm - résolution fine</li>
+                                <li>Plusieurs tailles disponibles</li>
+                                <li>Choix de couleurs</li>
+                                <li>Finition mate ou brillante</li>
+                            </ul>
+                            <!-- Upload fichier -->
+                            <div class="product-upload" data-product="vase">
+                                <button type="button" class="upload-toggle-btn" onclick="toggleUpload('vase')">
+                                    <span class="upload-icon-btn">📎</span> Joindre un fichier
+                                </button>
+                                <div class="upload-zone-wrapper" id="upload-wrapper-vase" style="display: none;">
+                                    <div class="upload-zone-product" id="upload-zone-vase" onclick="document.getElementById('file-vase').click()">
+                                        <input type="file" id="file-vase" accept=".stl,.pdf,.jpeg,.jpg,.png" style="display: none;" onchange="handleProductUpload('vase', this)">
+                                        <span class="upload-icon">📁</span>
+                                        <p>Glissez votre fichier ici ou cliquez</p>
+                                        <span class="upload-formats">STL, PDF, JPEG, PNG (max 50 Mo)</span>
+                                    </div>
+                                    <div class="upload-preview-product" id="preview-vase" style="display: none;"></div>
+                                </div>
+                            </div>
+                            <div class="product-detail-price">
+                                <span class="price">À partir de 18€</span>
+                                <a href="https://makerworld.com" target="_blank" class="btn btn-primary">Voir sur Makerworld</a>
+                                <button class="btn btn-primary btn-continuer" onclick="continuerCommande(this)" style="display: none;">Continuer</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-detail-card">
+                        <div class="product-detail-image">
+                            <img src="bougeoir-design-1.png" alt="Bougeoir Design" class="product-img">
+                        </div>
+                        <div class="product-detail-info">
+                            <h3>Bougeoir Design</h3>
+                            <p class="description">Bougeoir élégant au design contemporain pour créer une ambiance chaleureuse. Structure solide et résistante à la chaleur grâce à un filament adapté.</p>
+                            <ul class="product-features">
+                                <li>Filament PETG résistant à la chaleur</li>
+                                <li>Buse 0.4 mm - finition soignée</li>
+                                <li>Compatible bougies standard</li>
+                                <li>Design stable et sécurisé</li>
+                                <li>Personnalisation possible</li>
+                            </ul>
+                            <!-- Upload fichier -->
+                            <div class="product-upload" data-product="bougeoir">
+                                <button type="button" class="upload-toggle-btn" onclick="toggleUpload('bougeoir')">
+                                    <span class="upload-icon-btn">📎</span> Joindre un fichier
+                                </button>
+                                <div class="upload-zone-wrapper" id="upload-wrapper-bougeoir" style="display: none;">
+                                    <div class="upload-zone-product" id="upload-zone-bougeoir" onclick="document.getElementById('file-bougeoir').click()">
+                                        <input type="file" id="file-bougeoir" accept=".stl,.pdf,.jpeg,.jpg,.png" style="display: none;" onchange="handleProductUpload('bougeoir', this)">
+                                        <span class="upload-icon">📁</span>
+                                        <p>Glissez votre fichier ici ou cliquez</p>
+                                        <span class="upload-formats">STL, PDF, JPEG, PNG (max 50 Mo)</span>
+                                    </div>
+                                    <div class="upload-preview-product" id="preview-bougeoir" style="display: none;"></div>
+                                </div>
+                            </div>
+                            <div class="product-detail-price">
+                                <span class="price">À partir de 12€</span>
+                                <a href="https://makerworld.com" target="_blank" class="btn btn-primary">Voir sur Makerworld</a>
+                                <button class="btn btn-primary btn-continuer" onclick="continuerCommande(this)" style="display: none;">Continuer</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-detail-card">
+                        <div class="product-detail-image product-carousel" data-carousel="lampe">
+                            <div class="carousel-container">
+                                <div class="carousel-slides">
+                                    <img src="lampe-lune.png" alt="Lampe Lune" class="carousel-slide active">
+                                    <img src="lampe-lune-2.png" alt="Lampe Lune vue 2" class="carousel-slide">
+                                </div>
+                            </div>
+                            <button class="carousel-btn carousel-prev" onclick="changeSlide('lampe', -1)">‹</button>
+                            <button class="carousel-btn carousel-next" onclick="changeSlide('lampe', 1)">›</button>
+                            <div class="carousel-dots">
+                                <span class="dot active" onclick="goToSlide('lampe', 0)"></span>
+                                <span class="dot" onclick="goToSlide('lampe', 1)"></span>
+                            </div>
+                            <span class="product-badge new">Nouveau</span>
+                        </div>
+                        <div class="product-detail-info">
+                            <h3>Lampe Lune</h3>
+                            <p class="description">Reproduction fidèle de la surface lunaire avec relief réaliste et éclairage LED intégré. Imprimée en haute résolution pour capturer chaque cratère et détail. Ambiance magique garantie.</p>
+                            <ul class="product-features">
+                                <li>Filament PLA blanc translucide</li>
+                                <li>Buse 0.2 mm - ultra détaillé</li>
+                                <li>Relief lunaire réaliste</li>
+                                <li>LED tactile (3 intensités)</li>
+                                <li>Rechargeable USB</li>
+                            </ul>
+                            <!-- Upload fichier -->
+                            <div class="product-upload" data-product="lampe">
+                                <button type="button" class="upload-toggle-btn" onclick="toggleUpload('lampe')">
+                                    <span class="upload-icon-btn">📎</span> Joindre un fichier
+                                </button>
+                                <div class="upload-zone-wrapper" id="upload-wrapper-lampe" style="display: none;">
+                                    <div class="upload-zone-product" id="upload-zone-lampe" onclick="document.getElementById('file-lampe').click()">
+                                        <input type="file" id="file-lampe" accept=".stl,.pdf,.jpeg,.jpg,.png" style="display: none;" onchange="handleProductUpload('lampe', this)">
+                                        <span class="upload-icon">📁</span>
+                                        <p>Glissez votre fichier ici ou cliquez</p>
+                                        <span class="upload-formats">STL, PDF, JPEG, PNG (max 50 Mo)</span>
+                                    </div>
+                                    <div class="upload-preview-product" id="preview-lampe" style="display: none;"></div>
+                                </div>
+                            </div>
+                            <div class="product-detail-price">
+                                <span class="price">À partir de 29€</span>
+                                <a href="https://makerworld.com" target="_blank" class="btn btn-primary">Voir sur Makerworld</a>
+                                <button class="btn btn-primary btn-continuer" onclick="continuerCommande(this)" style="display: none;">Continuer</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category: Figurines -->
+            <div class="shop-category" style="margin-top: 80px;">
+                <div class="section-header" style="margin-bottom: 40px;">
+                    <h2>🎮 Figurines & Gaming</h2>
+                    <p>Figurines et accessoires pour les passionnés</p>
+                </div>
+                <div class="shop-grid">
+                    <div class="product-detail-card">
+                        <div class="product-detail-image product-carousel" data-carousel="figurine">
+                            <div class="carousel-container">
+                                <div class="carousel-slides">
+                                    <img src="figurine.png" alt="Figurine Personnalisée" class="carousel-slide active">
+                                    <img src="figurine-2.png" alt="Figurine Personnalisée vue 2" class="carousel-slide">
+                                </div>
+                            </div>
+                            <button class="carousel-btn carousel-prev" onclick="changeSlide('figurine', -1)">‹</button>
+                            <button class="carousel-btn carousel-next" onclick="changeSlide('figurine', 1)">›</button>
+                            <div class="carousel-dots">
+                                <span class="dot active" onclick="goToSlide('figurine', 0)"></span>
+                                <span class="dot" onclick="goToSlide('figurine', 1)"></span>
+                            </div>
+                            <span class="product-badge">Best-seller</span>
+                        </div>
+                        <div class="product-detail-info">
+                            <h3>Figurine Personnalisée</h3>
+                            <p class="description">Créez votre propre figurine personnalisée à partir de vos photos ou descriptions. Modélisée sur mesure et imprimée avec une buse fine pour capturer chaque détail : visage, vêtements, accessoires.</p>
+                            <ul class="product-features">
+                                <li>Filament PLA+ ou résine selon le détail</li>
+                                <li>Buse 0.2 mm - précision maximale</li>
+                                <li>Modélisation sur mesure</li>
+                                <li>Peinture à la main</li>
+                                <li>Plusieurs tailles</li>
+                            </ul>
+                            <!-- Upload fichier -->
+                            <div class="product-upload" data-product="figurine">
+                                <button type="button" class="upload-toggle-btn" onclick="toggleUpload('figurine')">
+                                    <span class="upload-icon-btn">📎</span> Joindre un fichier
+                                </button>
+                                <div class="upload-zone-wrapper" id="upload-wrapper-figurine" style="display: none;">
+                                    <div class="upload-zone-product" id="upload-zone-figurine" onclick="document.getElementById('file-figurine').click()">
+                                        <input type="file" id="file-figurine" accept=".stl,.pdf,.jpeg,.jpg,.png" style="display: none;" onchange="handleProductUpload('figurine', this)">
+                                        <span class="upload-icon">📁</span>
+                                        <p>Glissez votre fichier ici ou cliquez</p>
+                                        <span class="upload-formats">STL, PDF, JPEG, PNG (max 50 Mo)</span>
+                                    </div>
+                                    <div class="upload-preview-product" id="preview-figurine" style="display: none;"></div>
+                                </div>
+                            </div>
+                            <div class="product-detail-price">
+                                <span class="price">À partir de 45€</span>
+                                <a href="https://makerworld.com" target="_blank" class="btn btn-primary">Voir sur Makerworld</a>
+                                <button class="btn btn-primary btn-continuer" onclick="continuerCommande(this)" style="display: none;">Continuer</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-detail-card">
+                        <div class="product-detail-image product-carousel" data-carousel="jdr">
+                            <div class="carousel-container">
+                                <div class="carousel-slides">
+                                    <img src="accessoires-jdr.png" alt="Accessoires JDR" class="carousel-slide active">
+                                    <img src="accessoires-jdr-2.png" alt="Accessoires JDR vue 2" class="carousel-slide">
+                                </div>
+                            </div>
+                            <button class="carousel-btn carousel-prev" onclick="changeSlide('jdr', -1)">‹</button>
+                            <button class="carousel-btn carousel-next" onclick="changeSlide('jdr', 1)">›</button>
+                            <div class="carousel-dots">
+                                <span class="dot active" onclick="goToSlide('jdr', 0)"></span>
+                                <span class="dot" onclick="goToSlide('jdr', 1)"></span>
+                            </div>
+                        </div>
+                        <div class="product-detail-info">
+                            <h3>Accessoires JDR</h3>
+                            <p class="description">Tours à dés, boîtes de rangement et accessoires pour vos sessions de jeu de rôle. Imprimés avec un filament robuste pour un usage intensif, avec des finitions nettes sur chaque gravure.</p>
+                            <ul class="product-features">
+                                <li>Filament PLA+ robuste</li>
+                                <li>Buse 0.4 mm - rendu net</li>
+                                <li>Designs variés</li>
+                                <li>Fonctionnel et esthétique</li>
+                                <li>Personnalisation du nom</li>
+                            </ul>
+                            <!-- Upload fichier -->
+                            <div class="product-upload" data-product="jdr">
+                                <button type="button" class="upload-toggle-btn" onclick="toggleUpload('jdr')">
+                                    <span class="upload-icon-btn">📎</span> Joindre un fichier
+                                </button>
+                                <div class="upload-zone-wrapper" id="upload-wrapper-jdr" style="display: none;">
+                                    <div class="upload-zone-product" id="upload-zone-jdr" onclick="document.getElementById('file-jdr').click()">
+                                        <input type="file" id="file-jdr" accept=".stl,.pdf,.jpeg,.jpg,.png" style="display: none;" onchange="handleProductUpload('jdr', this)">
+                                        <span class="upload-icon">📁</span>
+                                        <p>Glissez votre fichier ici ou cliquez</p>
+                                        <span class="upload-formats">STL, PDF, JPEG, PNG (max 50 Mo)</span>
+                                    </div>
+                                    <div class="upload-preview-product" id="preview-jdr" style="display: none;"></div>
+                                </div>
+                            </div>
+                            <div class="product-detail-price">
+                                <span class="price">À partir de 15€</span>
+                                <a href="https://makerworld.com" target="_blank" class="btn btn-primary">Voir sur Makerworld</a>
+                                <button class="btn btn-primary btn-continuer" onclick="continuerCommande(this)" style="display: none;">Continuer</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-detail-card">
+                        <div class="product-detail-image product-carousel" data-carousel="manette">
+                            <div class="carousel-container">
+                                <div class="carousel-slides">
+                                    <img src="support-manette.png" alt="Support Manette" class="carousel-slide active">
+                                    <img src="support-manette-2.png" alt="Support Manette vue 2" class="carousel-slide">
+                                </div>
+                            </div>
+                            <button class="carousel-btn carousel-prev" onclick="changeSlide('manette', -1)">‹</button>
+                            <button class="carousel-btn carousel-next" onclick="changeSlide('manette', 1)">›</button>
+                            <div class="carousel-dots">
+                                <span class="dot active" onclick="goToSlide('manette', 0)"></span>
+                                <span class="dot" onclick="goToSlide('manette', 1)"></span>
+                            </div>
+                        </div>
+                        <div class="product-detail-info">
+                            <h3>Support Manette</h3>
+                            <p class="description">Support élégant pour exposer et ranger vos manettes de jeu. Imprimé en PETG pour une solidité à toute épreuve et une finition lisse au toucher.</p>
+                            <ul class="product-features">
+                                <li>Filament PETG solide et durable</li>
+                                <li>Buse 0.4 mm - finition lisse</li>
+                                <li>Compatible toutes manettes</li>
+                                <li>Design gaming</li>
+                                <li>Option LED intégrée</li>
+                            </ul>
+                            <!-- Upload fichier -->
+                            <div class="product-upload" data-product="manette">
+                                <button type="button" class="upload-toggle-btn" onclick="toggleUpload('manette')">
+                                    <span class="upload-icon-btn">📎</span> Joindre un fichier
+                                </button>
+                                <div class="upload-zone-wrapper" id="upload-wrapper-manette" style="display: none;">
+                                    <div class="upload-zone-product" id="upload-zone-manette" onclick="document.getElementById('file-manette').click()">
+                                        <input type="file" id="file-manette" accept=".stl,.pdf,.jpeg,.jpg,.png" style="display: none;" onchange="handleProductUpload('manette', this)">
+                                        <span class="upload-icon">📁</span>
+                                        <p>Glissez votre fichier ici ou cliquez</p>
+                                        <span class="upload-formats">STL, PDF, JPEG, PNG (max 50 Mo)</span>
+                                    </div>
+                                    <div class="upload-preview-product" id="preview-manette" style="display: none;"></div>
+                                </div>
+                            </div>
+                            <div class="product-detail-price">
+                                <span class="price">À partir de 20€</span>
+                                <a href="https://makerworld.com" target="_blank" class="btn btn-primary">Voir sur Makerworld</a>
+                                <button class="btn btn-primary btn-continuer" onclick="continuerCommande(this)" style="display: none;">Continuer</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category: Bureau -->
+            <div class="shop-category" style="margin-top: 80px;">
+                <div class="section-header" style="margin-bottom: 40px;">
+                    <h2>💼 Accessoires Bureau</h2>
+                    <p>Organisez votre espace de travail avec style</p>
+                </div>
+                <div class="shop-grid">
+                    <div class="product-detail-card">
+                        <div class="product-detail-image product-carousel" data-carousel="telephone">
+                            <div class="carousel-container">
+                                <div class="carousel-slides">
+                                    <img src="support-telephone.png" alt="Support Téléphone" class="carousel-slide active">
+                                    <img src="support-telephone-2.png" alt="Support Téléphone vue 2" class="carousel-slide">
+                                </div>
+                            </div>
+                            <button class="carousel-btn carousel-prev" onclick="changeSlide('telephone', -1)">‹</button>
+                            <button class="carousel-btn carousel-next" onclick="changeSlide('telephone', 1)">›</button>
+                            <div class="carousel-dots">
+                                <span class="dot active" onclick="goToSlide('telephone', 0)"></span>
+                                <span class="dot" onclick="goToSlide('telephone', 1)"></span>
+                            </div>
+                        </div>
+                        <div class="product-detail-info">
+                            <h3>Support Téléphone</h3>
+                            <p class="description">Support ergonomique pour smartphone, parfait pour le bureau ou la table de nuit. Imprimé en PLA+ avec une structure renforcée pour une stabilité optimale.</p>
+                            <ul class="product-features">
+                                <li>Filament PLA+ résistant</li>
+                                <li>Buse 0.4 mm - rendu propre</li>
+                                <li>Angle de vue optimal</li>
+                                <li>Compatible tous modèles</li>
+                                <li>Trou pour câble de charge</li>
+                            </ul>
+                            <!-- Upload fichier -->
+                            <div class="product-upload" data-product="telephone">
+                                <button type="button" class="upload-toggle-btn" onclick="toggleUpload('telephone')">
+                                    <span class="upload-icon-btn">📎</span> Joindre un fichier
+                                </button>
+                                <div class="upload-zone-wrapper" id="upload-wrapper-telephone" style="display: none;">
+                                    <div class="upload-zone-product" id="upload-zone-telephone" onclick="document.getElementById('file-telephone').click()">
+                                        <input type="file" id="file-telephone" accept=".stl,.pdf,.jpeg,.jpg,.png" style="display: none;" onchange="handleProductUpload('telephone', this)">
+                                        <span class="upload-icon">📁</span>
+                                        <p>Glissez votre fichier ici ou cliquez</p>
+                                        <span class="upload-formats">STL, PDF, JPEG, PNG (max 50 Mo)</span>
+                                    </div>
+                                    <div class="upload-preview-product" id="preview-telephone" style="display: none;"></div>
+                                </div>
+                            </div>
+                            <div class="product-detail-price">
+                                <span class="price">À partir de 10€</span>
+                                <a href="https://makerworld.com" target="_blank" class="btn btn-primary">Voir sur Makerworld</a>
+                                <button class="btn btn-primary btn-continuer" onclick="continuerCommande(this)" style="display: none;">Continuer</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-detail-card">
+                        <div class="product-detail-image product-carousel" data-carousel="crayon">
+                            <div class="carousel-container">
+                                <div class="carousel-slides">
+                                    <img src="pot-crayon.png" alt="Pot à Crayons" class="carousel-slide active">
+                                    <img src="pot-crayon-2.png" alt="Pot à Crayons vue 2" class="carousel-slide">
+                                </div>
+                            </div>
+                            <button class="carousel-btn carousel-prev" onclick="changeSlide('crayon', -1)">‹</button>
+                            <button class="carousel-btn carousel-next" onclick="changeSlide('crayon', 1)">›</button>
+                            <div class="carousel-dots">
+                                <span class="dot active" onclick="goToSlide('crayon', 0)"></span>
+                                <span class="dot" onclick="goToSlide('crayon', 1)"></span>
+                            </div>
+                            <span class="product-badge">Populaire</span>
+                        </div>
+                        <div class="product-detail-info">
+                            <h3>Pot à Crayons</h3>
+                            <p class="description">Organisateur de bureau au design unique pour garder vos stylos et fournitures à portée de main. Disponible en plusieurs designs créatifs avec possibilité de graver vos initiales.</p>
+                            <ul class="product-features">
+                                <li>Filament PLA+ haute qualité</li>
+                                <li>Buse 0.4 mm - détails nets</li>
+                                <li>Plusieurs compartiments</li>
+                                <li>Designs créatifs</li>
+                                <li>Personnalisation initiales</li>
+                            </ul>
+                            <!-- Upload fichier -->
+                            <div class="product-upload" data-product="crayon">
+                                <button type="button" class="upload-toggle-btn" onclick="toggleUpload('crayon')">
+                                    <span class="upload-icon-btn">📎</span> Joindre un fichier
+                                </button>
+                                <div class="upload-zone-wrapper" id="upload-wrapper-crayon" style="display: none;">
+                                    <div class="upload-zone-product" id="upload-zone-crayon" onclick="document.getElementById('file-crayon').click()">
+                                        <input type="file" id="file-crayon" accept=".stl,.pdf,.jpeg,.jpg,.png" style="display: none;" onchange="handleProductUpload('crayon', this)">
+                                        <span class="upload-icon">📁</span>
+                                        <p>Glissez votre fichier ici ou cliquez</p>
+                                        <span class="upload-formats">STL, PDF, JPEG, PNG (max 50 Mo)</span>
+                                    </div>
+                                    <div class="upload-preview-product" id="preview-crayon" style="display: none;"></div>
+                                </div>
+                            </div>
+                            <div class="product-detail-price">
+                                <span class="price">À partir de 12€</span>
+                                <a href="https://makerworld.com" target="_blank" class="btn btn-primary">Voir sur Makerworld</a>
+                                <button class="btn btn-primary btn-continuer" onclick="continuerCommande(this)" style="display: none;">Continuer</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-detail-card">
+                        <div class="product-detail-image tall product-carousel" data-carousel="casque">
+                            <div class="carousel-container">
+                                <div class="carousel-slides">
+                                    <img src="support-casque.png" alt="Support Casque" class="carousel-slide active">
+                                    <img src="support-casque-2.png" alt="Support Casque vue 2" class="carousel-slide">
+                                </div>
+                            </div>
+                            <button class="carousel-btn carousel-prev" onclick="changeSlide('casque', -1)">‹</button>
+                            <button class="carousel-btn carousel-next" onclick="changeSlide('casque', 1)">›</button>
+                            <div class="carousel-dots">
+                                <span class="dot active" onclick="goToSlide('casque', 0)"></span>
+                                <span class="dot" onclick="goToSlide('casque', 1)"></span>
+                            </div>
+                        </div>
+                        <div class="product-detail-info">
+                            <h3>Support Casque</h3>
+                            <p class="description">Support élégant et robuste pour votre casque audio ou gaming. Imprimé en PETG pour supporter le poids du casque sans déformation, avec une base large pour une stabilité parfaite.</p>
+                            <ul class="product-features">
+                                <li>Filament PETG solide et durable</li>
+                                <li>Buse 0.4 mm - structure renforcée</li>
+                                <li>Design minimaliste</li>
+                                <li>Base stable et large</li>
+                                <li>Plusieurs coloris</li>
+                            </ul>
+                            <!-- Upload fichier -->
+                            <div class="product-upload" data-product="casque">
+                                <button type="button" class="upload-toggle-btn" onclick="toggleUpload('casque')">
+                                    <span class="upload-icon-btn">📎</span> Joindre un fichier
+                                </button>
+                                <div class="upload-zone-wrapper" id="upload-wrapper-casque" style="display: none;">
+                                    <div class="upload-zone-product" id="upload-zone-casque" onclick="document.getElementById('file-casque').click()">
+                                        <input type="file" id="file-casque" accept=".stl,.pdf,.jpeg,.jpg,.png" style="display: none;" onchange="handleProductUpload('casque', this)">
+                                        <span class="upload-icon">📁</span>
+                                        <p>Glissez votre fichier ici ou cliquez</p>
+                                        <span class="upload-formats">STL, PDF, JPEG, PNG (max 50 Mo)</span>
+                                    </div>
+                                    <div class="upload-preview-product" id="preview-casque" style="display: none;"></div>
+                                </div>
+                            </div>
+                            <div class="product-detail-price">
+                                <span class="price">À partir de 15€</span>
+                                <a href="https://makerworld.com" target="_blank" class="btn btn-primary">Voir sur Makerworld</a>
+                                <button class="btn btn-primary btn-continuer" onclick="continuerCommande(this)" style="display: none;">Continuer</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom Order CTA -->
+            <div class="custom-order-cta" style="margin-top: 80px; text-align: center; padding: 60px 40px; background: var(--light-gray); border-radius: 24px;">
+                <h2 style="margin-bottom: 16px;">Vous avez une idée en tête ?</h2>
+                <p style="color: var(--text-light); margin-bottom: 32px; max-width: 500px; margin-left: auto; margin-right: auto;">Je peux créer une pièce sur mesure selon vos envies. Décrivez-moi votre projet et je vous ferai un devis personnalisé.</p>
+                <a href="contact.html" class="btn btn-primary btn-lg">Demander un devis personnalisé</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">Tommy<span>3D</span></a>
+                    <p>Créations uniques imprimées en 3D avec passion et savoir-faire.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="lightbox.html">Créer ma Lightbox</a></li>
+                        <li><a href="commander.html">Boutique</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Informations</h4>
+                    <ul>
+                        <li><a href="#">CGV</a></li>
+                        <li><a href="#">Politique de confidentialité</a></li>
+                        <li><a href="#">Retours & Remboursements</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <p>contact@tommy3d.fr</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">Instagram</a>
+                        <a href="#" class="social-link">TikTok</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Tommy3D. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to top -->
+    <button class="scroll-top" id="scrollTop" aria-label="Retour en haut">↑</button>
+
+    <script src="script.js?v=3"></script>
+    <script>
+    // Carousel state
+    const carouselState = {};
+
+    function initCarousels() {
+        document.querySelectorAll('.product-carousel').forEach(carousel => {
+            const id = carousel.dataset.carousel;
+            const slides = carousel.querySelectorAll('.carousel-slide');
+            carouselState[id] = { current: 0, total: slides.length };
+
+            // Touch/swipe support
+            let startX = 0;
+            let endX = 0;
+
+            carousel.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+            }, { passive: true });
+
+            carousel.addEventListener('touchend', (e) => {
+                endX = e.changedTouches[0].clientX;
+                const diff = startX - endX;
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) {
+                        changeSlide(id, 1);
+                    } else {
+                        changeSlide(id, -1);
+                    }
+                }
+            }, { passive: true });
+        });
+    }
+
+    function changeSlide(carouselId, direction) {
+        const state = carouselState[carouselId];
+        state.current = (state.current + direction + state.total) % state.total;
+        updateCarousel(carouselId);
+    }
+
+    function goToSlide(carouselId, index) {
+        carouselState[carouselId].current = index;
+        updateCarousel(carouselId);
+    }
+
+    function updateCarousel(carouselId) {
+        const carousel = document.querySelector(`[data-carousel="${carouselId}"]`);
+        const slides = carousel.querySelector('.carousel-slides');
+        const dots = carousel.querySelectorAll('.dot');
+        const current = carouselState[carouselId].current;
+
+        slides.style.transform = `translateX(-${current * 100}%)`;
+
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === current);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', initCarousels);
+
+    // ===== Product File Upload System =====
+    const productFiles = {};
+
+    function toggleUpload(productId) {
+        const wrapper = document.getElementById(`upload-wrapper-${productId}`);
+        const btn = wrapper.previousElementSibling;
+
+        if (wrapper.style.display === 'none') {
+            wrapper.style.display = 'block';
+            btn.classList.add('active');
+        } else {
+            wrapper.style.display = 'none';
+            btn.classList.remove('active');
+        }
+    }
+
+    function handleProductUpload(productId, input) {
+        const file = input.files[0];
+        if (!file) return;
+
+        // Validate file size (50 MB max)
+        const maxSize = 50 * 1024 * 1024;
+        if (file.size > maxSize) {
+            alert('Le fichier est trop volumineux. Taille maximum : 50 Mo');
+            input.value = '';
+            return;
+        }
+
+        // Validate file type
+        const allowedTypes = ['stl', 'pdf', 'jpeg', 'jpg', 'png'];
+        const ext = file.name.split('.').pop().toLowerCase();
+        if (!allowedTypes.includes(ext)) {
+            alert('Format non supporté. Formats acceptés : STL, PDF, JPEG, PNG');
+            input.value = '';
+            return;
+        }
+
+        // Store file info
+        productFiles[productId] = {
+            name: file.name,
+            size: file.size,
+            type: ext,
+            file: file
+        };
+
+        // Show preview
+        showFilePreview(productId, file);
+    }
+
+    function toggleContinuerBtn(productId, show) {
+        const card = document.querySelector(`[data-product="${productId}"]`).closest('.product-detail-card');
+        const continuerBtn = card.querySelector('.btn-continuer');
+        if (continuerBtn) continuerBtn.style.display = show ? 'inline-flex' : 'none';
+    }
+
+    function showFilePreview(productId, file) {
+        const uploadZone = document.getElementById(`upload-zone-${productId}`);
+        const previewContainer = document.getElementById(`preview-${productId}`);
+
+        uploadZone.style.display = 'none';
+        previewContainer.style.display = 'block';
+        toggleContinuerBtn(productId, true);
+
+        const ext = file.name.split('.').pop().toLowerCase();
+        const isImage = ['jpeg', 'jpg', 'png'].includes(ext);
+
+        if (isImage) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewContainer.innerHTML = `
+                    <div class="file-preview-image">
+                        <img src="${e.target.result}" alt="Aperçu">
+                        <button type="button" class="remove-file-btn" onclick="removeProductFile('${productId}')">Supprimer</button>
+                    </div>
+                    <div class="file-info-bar">
+                        <span class="file-name">${file.name}</span>
+                        <span class="file-size">${formatFileSize(file.size)}</span>
+                    </div>
+                `;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            const icon = getFileIcon(ext);
+            previewContainer.innerHTML = `
+                <div class="file-preview-doc">
+                    <span class="file-type-icon">${icon}</span>
+                    <div class="file-details">
+                        <span class="file-name">${file.name}</span>
+                        <span class="file-size">${formatFileSize(file.size)}</span>
+                    </div>
+                    <button type="button" class="remove-file-btn" onclick="removeProductFile('${productId}')">Supprimer</button>
+                </div>
+            `;
+        }
+    }
+
+    function removeProductFile(productId) {
+        const uploadZone = document.getElementById(`upload-zone-${productId}`);
+        const previewContainer = document.getElementById(`preview-${productId}`);
+        const fileInput = document.getElementById(`file-${productId}`);
+
+        previewContainer.style.display = 'none';
+        previewContainer.innerHTML = '';
+        uploadZone.style.display = 'block';
+        fileInput.value = '';
+        delete productFiles[productId];
+        toggleContinuerBtn(productId, false);
+    }
+
+    function getFileIcon(ext) {
+        const icons = {
+            'pdf': '📄',
+            'stl': '🧊'
+        };
+        return icons[ext] || '📎';
+    }
+
+    function formatFileSize(bytes) {
+        if (bytes < 1024) return bytes + ' o';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' Ko';
+        return (bytes / (1024 * 1024)).toFixed(1) + ' Mo';
+    }
+
+    // Upload vers Cloudinary
+    function uploadToCloudinary(file) {
+        return new Promise((resolve, reject) => {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', 'lnidwx3m');
+            formData.append('folder', 'commandes');
+            fetch('https://api.cloudinary.com/v1_1/dpl7tgj6u/auto/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.secure_url) resolve(data.secure_url);
+                else reject(data.error || 'Upload failed');
+            })
+            .catch(reject);
+        });
+    }
+
+    // Bouton Continuer - redirige vers contact avec les infos produit
+    async function continuerCommande(btn) {
+        const card = btn.closest('.product-detail-card');
+        const nom = card.querySelector('h3').textContent;
+        const prix = card.querySelector('.price').textContent;
+        const description = card.querySelector('.description').textContent;
+        const features = Array.from(card.querySelectorAll('.product-features li')).map(li => li.textContent);
+        const productId = card.querySelector('.product-upload')?.dataset.product || '';
+        const fileInfo = productFiles[productId] || null;
+
+        btn.textContent = 'Envoi du fichier...';
+        btn.disabled = true;
+
+        let fileUrl = null;
+        try {
+            if (fileInfo && fileInfo.file) {
+                fileUrl = await uploadToCloudinary(fileInfo.file);
+            }
+        } catch (err) {
+            console.error('Cloudinary upload error:', err);
+        }
+
+        const commande = {
+            produit: nom,
+            prix: prix,
+            description: description,
+            specs: features.filter(f => f.includes('Filament') || f.includes('Buse')),
+            fichier: fileInfo?.name || null,
+            fileUrl: fileUrl
+        };
+
+        localStorage.setItem('productOrder', JSON.stringify(commande));
+        window.location.href = 'contact.html';
+    }
+
+    // Drag and drop support
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.upload-zone-product').forEach(zone => {
+            const productId = zone.id.replace('upload-zone-', '');
+
+            zone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                zone.classList.add('dragover');
+            });
+
+            zone.addEventListener('dragleave', () => {
+                zone.classList.remove('dragover');
+            });
+
+            zone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                zone.classList.remove('dragover');
+
+                const file = e.dataTransfer.files[0];
+                if (file) {
+                    const input = document.getElementById(`file-${productId}`);
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    input.files = dataTransfer.files;
+                    handleProductUpload(productId, input);
+                }
+            });
+        });
+    });
+    </script>
+</body>
+</html>

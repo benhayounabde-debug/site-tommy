@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "api/checkout.js", "use": "@vercel/node" },
+    { "src": "api/webhook.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    {
+      "src": "/api/checkout",
+      "dest": "/api/checkout.js"
+    },
+    {
+      "src": "/api/webhook",
+      "dest": "/api/webhook.js"
+    }
+  ]
+}

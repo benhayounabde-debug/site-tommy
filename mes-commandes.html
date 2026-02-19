@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Commandes - Tommy 3D</title>
+    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .orders-page { padding: 120px 0 80px; min-height: 80vh; }
+        .orders-container { max-width: 800px; margin: 0 auto; }
+
+        .page-header {
+            text-align: center; margin-bottom: 32px;
+        }
+        .page-header h1 { font-size: 28px; margin-bottom: 8px; }
+        .page-header p { color: #555; }
+
+        .order-card {
+            background: var(--white); border-radius: 16px; padding: 28px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 16px;
+            transition: all 0.3s;
+        }
+        .order-card:hover { box-shadow: 0 6px 30px rgba(0,0,0,0.12); }
+
+        .order-top {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            margin-bottom: 16px; flex-wrap: wrap; gap: 12px;
+        }
+        .order-product { font-size: 18px; font-weight: 600; }
+        .order-date { font-size: 13px; color: #555; }
+        .order-price { font-size: 20px; font-weight: 700; color: var(--secondary); }
+
+        .order-status {
+            display: inline-block; padding: 6px 16px; border-radius: 50px;
+            font-size: 13px; font-weight: 600;
+        }
+        .status-nouveau { background: #E3F2FD; color: #1565C0; }
+        .status-valide { background: #E8F5E9; color: #27ae60; }
+        .status-en_cours { background: #FFF3E0; color: #E65100; }
+        .status-fabrique { background: #F3E5F5; color: #6A1B9A; }
+        .status-expedie { background: #E8F5E9; color: #2E7D32; }
+        .status-livre { background: #E8F5E9; color: #1B5E20; }
+        .status-annule { background: #FFEBEE; color: #C62828; }
+
+        .order-details {
+            display: flex; gap: 24px; flex-wrap: wrap; margin: 16px 0;
+            padding: 16px 0; border-top: 1px solid #E5E5E5;
+        }
+        .order-detail { font-size: 14px; color: #555; }
+        .order-detail strong { color: var(--secondary); }
+
+        .payment-banner {
+            margin-top: 16px; padding: 20px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 12px;
+        }
+        .payment-banner.waiting { background: #FFF8E1; border: 1px solid #FFE082; }
+        .payment-banner.ready { background: #E8F5E9; border: 1px solid #A5D6A7; }
+        .payment-banner.paid { background: #E8F5E9; border: 1px solid #A5D6A7; }
+        .payment-banner p { font-size: 14px; font-weight: 500; margin: 0; }
+        .payment-banner .sub { font-size: 13px; color: #555; font-weight: 400; }
+
+        .btn-pay {
+            display: inline-block; padding: 12px 32px; background: #27ae60; color: white;
+            text-decoration: none; border-radius: 50px; font-weight: 600; font-size: 14px;
+            transition: all 0.3s;
+        }
+        .btn-pay:hover { background: #219a52; transform: translateY(-2px); box-shadow: 0 4px 16px rgba(39,174,96,0.3); }
+
+        .paid-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 8px 20px; background: #27ae60; color: white;
+            border-radius: 50px; font-weight: 600; font-size: 13px;
+        }
+
+        .btn-track {
+            display: inline-block; margin-top: 12px; font-size: 13px;
+            color: var(--primary-dark); text-decoration: none; font-weight: 500;
+        }
+        .btn-track:hover { text-decoration: underline; }
+
+        /* Timeline mini */
+        .order-timeline {
+            display: flex;
+            justify-content: space-between;
+            margin: 16px 0 0;
+            position: relative;
+            padding: 0 4px;
+        }
+        .order-timeline::before {
+            content: '';
+            position: absolute;
+            top: 14px;
+            left: 20px;
+            right: 20px;
+            height: 3px;
+            background: #E5E5E5;
+            z-index: 0;
+        }
+        .timeline-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            flex: 1;
+        }
+        .timeline-dot {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #E5E5E5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 6px;
+            transition: all 0.3s;
+        }
+        .timeline-step.done .timeline-dot {
+            background: #27ae60;
+            color: white;
+        }
+        .timeline-step.active .timeline-dot {
+            background: var(--primary, #C7ADA5);
+            color: white;
+            box-shadow: 0 0 0 5px rgba(199, 173, 165, 0.3);
+        }
+        .timeline-label {
+            font-size: 10px;
+            color: #999;
+            text-align: center;
+            max-width: 60px;
+        }
+        .timeline-step.done .timeline-label,
+        .timeline-step.active .timeline-label {
+            font-weight: 600;
+            color: var(--secondary, #121212);
+        }
+
+        @media (max-width: 600px) {
+            .timeline-label { font-size: 9px; max-width: 50px; }
+            .timeline-dot { width: 24px; height: 24px; font-size: 10px; }
+        }
+
+        .no-orders {
+            background: var(--white); border-radius: 16px; padding: 60px 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center; color: #555;
+        }
+        .no-orders h3 { margin-bottom: 8px; color: var(--secondary); }
+        .no-orders a { display: inline-block; margin-top: 16px; color: var(--primary-dark); font-weight: 600; }
+
+        .loading-orders { text-align: center; padding: 40px; color: #555; }
+
+        /* Popup client */
+        .client-popup-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+            z-index: 9999; align-items: center; justify-content: center;
+        }
+        .client-popup-overlay.active { display: flex; }
+        .client-popup {
+            background: white; border-radius: 20px; padding: 40px 32px;
+            text-align: center; max-width: 420px; width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            animation: popupBounce 0.4s ease;
+        }
+        @keyframes popupBounce {
+            0% { transform: scale(0.7); opacity: 0; }
+            60% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .client-popup-icon { font-size: 64px; margin-bottom: 16px; display: block; }
+        .client-popup h2 { font-size: 22px; font-weight: 700; margin-bottom: 10px; color: #121212; }
+        .client-popup p { font-size: 14px; color: #555; line-height: 1.6; margin-bottom: 8px; }
+        .client-popup .popup-product { font-weight: 700; color: #121212; font-size: 16px; margin: 12px 0; }
+        .client-popup .popup-price { font-size: 24px; font-weight: 700; color: #27ae60; margin: 8px 0 20px; }
+        .client-popup .btn-popup-pay {
+            display: inline-block; padding: 14px 40px; background: #27ae60; color: white;
+            text-decoration: none; border-radius: 50px; font-weight: 700; font-size: 16px;
+            transition: all 0.3s; margin-bottom: 12px;
+        }
+        .client-popup .btn-popup-pay:hover { background: #219a52; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(39,174,96,0.35); }
+        .client-popup .btn-popup-close {
+            display: block; margin: 8px auto 0; background: none; border: none;
+            color: #999; font-size: 14px; cursor: pointer; font-family: inherit;
+        }
+        .client-popup .btn-popup-close:hover { color: #333; }
+
+        @media (max-width: 600px) {
+            .order-card { padding: 20px; }
+            .order-top { flex-direction: column; }
+            .payment-banner { flex-direction: column; text-align: center; }
+            .client-popup { padding: 32px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Barre d'annonce -->
+    <div class="announcement-bar">
+        <p>Livraison rapide en 3-5 jours ouvrés | <span class="highlight">-10% avec le code BIENVENUE</span></p>
+    </div>
+
+    <!-- Navigation -->
+    <header class="header">
+        <nav class="nav container">
+            <a href="index.html" class="logo">Tommy<span>3D</span></a>
+            <button class="mobile-menu-btn" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="lightbox.html">Créer ma Lightbox</a></li>
+                <li><a href="commander.html">Boutique</a></li>
+                <li><a href="mes-commandes.html" class="active">Mes Commandes</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="contact.html" class="btn btn-primary">Commander</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="orders-page">
+        <div class="container orders-container">
+            <div class="page-header">
+                <h1>Mes Commandes</h1>
+                <p>Retrouvez vos commandes et effectuez vos paiements.</p>
+            </div>
+            <div id="ordersContainer">
+                <div class="loading-orders">Chargement de vos commandes...</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">Tommy<span>3D</span></a>
+                    <p>Créations uniques imprimées en 3D avec passion et savoir-faire.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="lightbox.html">Créer ma Lightbox</a></li>
+                        <li><a href="commander.html">Boutique</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <p>contact@tommy3d.fr</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Tommy3D. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Popup notification client -->
+    <div class="client-popup-overlay" id="clientPopup">
+        <div class="client-popup">
+            <span class="client-popup-icon" id="popupIcon"></span>
+            <h2 id="popupTitle"></h2>
+            <p id="popupMsg"></p>
+            <div class="popup-product" id="popupProduct"></div>
+            <div class="popup-price" id="popupPrice"></div>
+            <a href="#" class="btn-popup-pay" id="popupPayBtn" target="_blank" rel="noopener" style="display:none;">Payer maintenant</a>
+            <button class="btn-popup-close" onclick="closeClientPopup()">Fermer</button>
+        </div>
+    </div>
+
+    <button class="scroll-top" id="scrollTop" aria-label="Retour en haut">↑</button>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js?v=3"></script>
+    <script>
+    const STATUS_LABELS = {
+        nouveau: 'En attente de validation',
+        valide: 'Validée - Paiement requis',
+        en_cours: 'En cours de fabrication',
+        fabrique: 'Fabriquée',
+        expedie: 'Expédiée',
+        livre: 'Livrée',
+        annule: 'Annulée'
+    };
+
+    function esc(str) {
+        if (!str) return '';
+        const d = document.createElement('div');
+        d.textContent = str;
+        return d.innerHTML;
+    }
+
+    function formatDate(ts) {
+        if (!ts) return '-';
+        const d = ts.toDate ? ts.toDate() : new Date(ts);
+        return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
+    const TIMELINE_STEPS = [
+        { key: 'nouveau', label: 'Reçue', icon: '1' },
+        { key: 'valide', label: 'Validée', icon: '2' },
+        { key: 'en_cours', label: 'En cours', icon: '3' },
+        { key: 'fabrique', label: 'Fabriquée', icon: '4' },
+        { key: 'expedie', label: 'Expédiée', icon: '5' },
+        { key: 'livre', label: 'Livrée', icon: '6' }
+    ];
+
+    function renderTimeline(status) {
+        const currentIndex = TIMELINE_STEPS.findIndex(s => s.key === status);
+        return TIMELINE_STEPS.map((s, i) => {
+            let cls = '';
+            if (i < currentIndex) cls = 'done';
+            else if (i === currentIndex) cls = 'active';
+            return `<div class="timeline-step ${cls}">
+                <div class="timeline-dot">${i < currentIndex ? '&#10003;' : s.icon}</div>
+                <span class="timeline-label">${s.label}</span>
+            </div>`;
+        }).join('');
+    }
+
+    function renderOrder(o) {
+        const statusClass = 'status-' + (o.status || 'nouveau');
+        const isCancelled = o.status === 'annule';
+
+        let paymentHTML = '';
+        if (isCancelled) {
+            paymentHTML = '';
+        } else if (o.paymentStatus === 'paye') {
+            paymentHTML = `<div class="payment-banner paid">
+                <div><p>Paiement confirmé</p><span class="sub">Merci pour votre paiement !</span></div>
+                <span class="paid-badge">&#10003; Payé</span>
+            </div>`;
+        } else if (o.status === 'valide' && o.trackingId) {
+            paymentHTML = `<div class="payment-banner ready">
+                <div><p>Commande validée, paiement en attente</p><span class="sub">Cliquez sur le bouton pour procéder au paiement.</span></div>
+                <a href="paiement.html?id=${esc(o.trackingId)}" class="btn-pay">Payer ${esc(o.price)}</a>
+            </div>`;
+        } else if (o.status === 'nouveau') {
+            paymentHTML = `<div class="payment-banner waiting">
+                <div><p>En attente de validation</p><span class="sub">Votre commande est en cours de vérification. Vous pourrez payer une fois validée.</span></div>
+            </div>`;
+        } else if (o.paymentStatus !== 'paye') {
+            paymentHTML = `<div class="payment-banner waiting">
+                <div><p>Paiement en attente</p><span class="sub">Le lien de paiement sera bientôt disponible.</span></div>
+            </div>`;
+        }
+
+        const trackingLink = o.trackingId ? `<a href="suivi.html?id=${esc(o.trackingId)}" class="btn-track">Voir le suivi détaillé →</a>` : '';
+
+        return `<div class="order-card">
+            <div class="order-top">
+                <div>
+                    <div class="order-product">${esc(o.productName)}</div>
+                    <div class="order-date">${formatDate(o.createdAt)}</div>
+                </div>
+                <div class="order-price">${esc(o.price)}</div>
+            </div>
+            <span class="order-status ${statusClass}">${STATUS_LABELS[o.status] || o.status}</span>
+            ${!isCancelled ? `<div class="order-timeline">${renderTimeline(o.status)}</div>` : ''}
+            <div class="order-details">
+                ${o.quantity > 1 ? `<div class="order-detail">Quantité : <strong>${o.quantity}</strong></div>` : ''}
+                ${o.size ? `<div class="order-detail">Taille : <strong>${esc(o.size)}</strong></div>` : ''}
+                ${o.color ? `<div class="order-detail">Couleur : <strong>${esc(o.color)}</strong></div>` : ''}
+                ${o.led ? `<div class="order-detail">LED : <strong>${esc(o.led)}</strong></div>` : ''}
+            </div>
+            ${paymentHTML}
+            ${trackingLink}
+        </div>`;
+    }
+
+    // Popup client
+    function showClientPopup(icon, title, msg, product, price, payLink) {
+        document.getElementById('popupIcon').textContent = icon;
+        document.getElementById('popupTitle').textContent = title;
+        document.getElementById('popupMsg').innerHTML = msg;
+        document.getElementById('popupProduct').textContent = product || '';
+        document.getElementById('popupPrice').textContent = price || '';
+        const payBtn = document.getElementById('popupPayBtn');
+        if (payLink) {
+            payBtn.href = payLink;
+            payBtn.style.display = 'inline-block';
+        } else {
+            payBtn.style.display = 'none';
+        }
+        document.getElementById('clientPopup').classList.add('active');
+    }
+
+    function closeClientPopup() {
+        document.getElementById('clientPopup').classList.remove('active');
+    }
+
+    document.getElementById('clientPopup').addEventListener('click', function(e) {
+        if (e.target === this) closeClientPopup();
+    });
+
+    let activeListeners = [];
+
+    // Simple popup system: show popup if order status changed and client hasn't seen it yet
+    // Each order gets a key like "tommy3d_seen_STATUS_trackingId" in localStorage
+    function checkAndShowPopups(orders) {
+        const POPUP_CONFIG = {
+            valide: {
+                icon: '🎉', title: 'Commande validée !',
+                msg: 'Votre commande a été validée par Tommy3D.<br>Vous pouvez maintenant procéder au paiement.'
+            },
+            en_cours: {
+                icon: '🔧', title: 'Fabrication en cours !',
+                msg: 'Votre commande est en cours de fabrication.<br>Nous vous tiendrons informé de l\'avancement.'
+            },
+            fabrique: {
+                icon: '✨', title: 'Commande fabriquée !',
+                msg: 'Votre commande a été fabriquée avec soin.<br>Elle sera bientôt expédiée.'
+            },
+            expedie: {
+                icon: '📦', title: 'Commande expédiée !',
+                msg: 'Votre commande est en route !<br>Vous la recevrez dans les prochains jours.'
+            },
+            livre: {
+                icon: '🏠', title: 'Commande livrée !',
+                msg: 'Votre commande a été livrée.<br>Merci pour votre confiance !'
+            },
+            annule: {
+                icon: '❌', title: 'Commande annulée',
+                msg: 'Votre commande a été annulée.<br>Contactez-nous si vous avez des questions.'
+            }
+        };
+
+        for (const o of orders) {
+            if (!o.trackingId || !o.status) continue;
+            if (o.status === 'nouveau') continue; // pas de popup pour "nouveau"
+
+            const seenKey = 'tommy3d_seen_' + o.status + '_' + o.trackingId;
+
+            if (!localStorage.getItem(seenKey)) {
+                // Client n'a pas encore vu ce statut → afficher la popup
+                const cfg = POPUP_CONFIG[o.status];
+                if (cfg) {
+                    const payLink = (o.status === 'valide' && o.paymentLink) ? o.paymentLink : null;
+                    showClientPopup(cfg.icon, cfg.title, cfg.msg, o.productName, o.status === 'annule' ? '' : o.price, payLink);
+                    // Marquer comme vu quand le client ferme la popup
+                    const origClose = closeClientPopup;
+                    closeClientPopup = function() {
+                        localStorage.setItem(seenKey, '1');
+                        document.getElementById('clientPopup').classList.remove('active');
+                        closeClientPopup = origClose;
+                    };
+                    break; // une seule popup à la fois
+                }
+            }
+        }
+    }
+
+    function loadOrders() {
+        const container = document.getElementById('ordersContainer');
+        const savedIds = JSON.parse(localStorage.getItem('tommy3d_orders') || '[]');
+
+        // Cleanup previous listeners
+        activeListeners.forEach(unsub => unsub());
+        activeListeners = [];
+
+        if (!savedIds.length) {
+            container.innerHTML = `<div class="no-orders">
+                <h3>Aucune commande</h3>
+                <p>Vous n'avez pas encore passé de commande.</p>
+                <a href="commander.html">Voir la boutique</a>
+            </div>`;
+            return;
+        }
+
+        const chunks = [];
+        for (let i = 0; i < savedIds.length; i += 30) {
+            chunks.push(savedIds.slice(i, i + 30));
+        }
+
+        let allOrders = [];
+
+        chunks.forEach(chunk => {
+            const unsub = db.collection('orders')
+                .where('trackingId', 'in', chunk)
+                .onSnapshot(snap => {
+                    // Remove old orders from this chunk
+                    const chunkIds = new Set(chunk);
+                    allOrders = allOrders.filter(o => !chunkIds.has(o.trackingId));
+
+                    // Add updated orders
+                    snap.docs.forEach(doc => allOrders.push(doc.data()));
+
+                    // Sort and render
+                    allOrders.sort((a, b) => {
+                        const da = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(0);
+                        const db2 = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(0);
+                        return db2 - da;
+                    });
+
+                    if (!allOrders.length) {
+                        container.innerHTML = `<div class="no-orders">
+                            <h3>Aucune commande trouvée</h3>
+                            <p>Vos commandes n'ont pas pu être retrouvées.</p>
+                            <a href="commander.html">Voir la boutique</a>
+                        </div>`;
+                    } else {
+                        container.innerHTML = allOrders.map(renderOrder).join('');
+                        checkAndShowPopups(allOrders);
+                    }
+                }, err => {
+                    console.error(err);
+                    container.innerHTML = `<div class="no-orders">
+                        <h3>Erreur</h3>
+                        <p>Impossible de charger vos commandes. Veuillez réessayer.</p>
+                    </div>`;
+                });
+
+            activeListeners.push(unsub);
+        });
+    }
+
+    loadOrders();
+    </script>
+</body>
+</html>

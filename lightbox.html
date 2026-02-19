@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer ma Lightbox - Tommy 3D</title>
+    <link rel="stylesheet" href="style.css?v=5">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Barre d'annonce -->
+    <div class="announcement-bar">
+        <p>✨ Lightbox personnalisée | <span class="highlight">Votre photo transformée en lampe LED unique</span></p>
+    </div>
+
+    <!-- Navigation -->
+    <header class="header">
+        <nav class="nav container">
+            <a href="index.html" class="logo">Tommy<span>3D</span></a>
+            <button class="mobile-menu-btn" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="lightbox.html" class="active">Créer ma Lightbox</a></li>
+                <li><a href="commander.html">Boutique</a></li>
+                <li><a href="mes-commandes.html">Mes Commandes</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="contact.html" class="btn btn-primary">Commander</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Produit -->
+    <section class="product-hero">
+        <div class="container">
+            <div class="product-hero-grid">
+                <!-- Galerie Images -->
+                <div class="product-gallery">
+                    <div class="gallery-main">
+                        <div class="lightbox-preview" id="lightboxPreview">
+                            <div class="lightbox-frame">
+                                <div class="lightbox-glow"></div>
+                                <div class="lightbox-content lightbox-content-image">
+                                    <img src="lightbox-exemple-1.png" alt="Exemple lightbox personnalisée" id="mainPreviewImage">
+                                </div>
+                            </div>
+                        </div>
+                        <span class="product-badge" style="position: absolute; top: 20px; left: 20px;">Best-seller</span>
+                    </div>
+                    <div class="gallery-thumbs">
+                        <div class="thumb active">
+                            <img src="lightbox-exemple-1.png" alt="Lightbox NICK" onclick="changeMainImage('lightbox-exemple-1.png', this.parentElement)" style="cursor:pointer;">
+                        </div>
+                        <div class="thumb">
+                            <img src="lightbox-exemple-2.png" alt="Lightbox exemple 2" onclick="changeMainImage('lightbox-exemple-2.png', this.parentElement)" style="cursor:pointer;">
+                        </div>
+                        <div class="thumb">
+                            <img src="lightbox-exemple-3.png" alt="Lightbox Marvel" onclick="changeMainImage('lightbox-exemple-3.png', this.parentElement)" style="cursor:pointer;">
+                        </div>
+                        <div class="thumb">
+                            <img src="lightbox-exemple-4.png" alt="Lightbox Etoile Mario" onclick="changeMainImage('lightbox-exemple-4.png', this.parentElement)" style="cursor:pointer;">
+                        </div>
+                        <div class="thumb">
+                            <img src="lightbox-exemple-5.png" alt="Lightbox Happy Birthday" onclick="changeMainImage('lightbox-exemple-5.png', this.parentElement)" style="cursor:pointer;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configurateur -->
+                <div class="product-configurator">
+                    <div class="product-header">
+                        <span class="section-badge">Personnalisable</span>
+                        <h1>Lightbox Personnalisée</h1>
+                        <p class="product-subtitle">Transformez votre photo préférée en une magnifique lampe LED rétroéclairée</p>
+
+                        <div class="product-rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="rating-count">(127 avis)</span>
+                        </div>
+                    </div>
+
+                    <div class="product-pricing">
+                        <div class="price-box">
+                            <span class="current-price" id="totalPrice">49,99€</span>
+                            <span class="original-price">69,99€</span>
+                            <span class="discount-badge">-29%</span>
+                        </div>
+                        <div class="price-details" style="margin-top:8px;font-size:13px;color:#555;">
+                            <div style="display:flex;justify-content:space-between;">
+                                <span>Sous-total</span>
+                                <span id="subtotalPrice">49,99€</span>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;margin-top:4px;">
+                                <span>Livraison</span>
+                                <span id="shippingPrice">9,90€</span>
+                            </div>
+                        </div>
+                        <p class="price-info">Taxes incluses • Livraison incluse dans le prix</p>
+                    </div>
+
+                    <!-- Options de personnalisation -->
+                    <div class="config-section">
+                        <h3>1. Choisissez la taille</h3>
+                        <div class="size-options">
+                            <label class="size-option">
+                                <input type="radio" name="size" value="S" data-price="39.99">
+                                <div class="size-box">
+                                    <span class="size-label">S</span>
+                                    <span class="size-dim">15 x 20 cm</span>
+                                    <span class="size-price">39,99€</span>
+                                </div>
+                            </label>
+                            <label class="size-option">
+                                <input type="radio" name="size" value="M" data-price="49.99" checked>
+                                <div class="size-box">
+                                    <span class="size-label">M</span>
+                                    <span class="size-dim">20 x 25 cm</span>
+                                    <span class="size-price">49,99€</span>
+                                    <span class="popular-tag">Populaire</span>
+                                </div>
+                            </label>
+                            <label class="size-option">
+                                <input type="radio" name="size" value="L" data-price="64.99">
+                                <div class="size-box">
+                                    <span class="size-label">L</span>
+                                    <span class="size-dim">25 x 30 cm</span>
+                                    <span class="size-price">64,99€</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="config-section">
+                        <h3>2. Forme du cadre</h3>
+                        <div class="shape-options">
+                            <label class="shape-option">
+                                <input type="radio" name="shape" value="rectangle" checked>
+                                <div class="shape-box">
+                                    <div class="shape-preview shape-rectangle"></div>
+                                    <span>Rectangle</span>
+                                </div>
+                            </label>
+                            <label class="shape-option">
+                                <input type="radio" name="shape" value="carre">
+                                <div class="shape-box">
+                                    <div class="shape-preview shape-carre"></div>
+                                    <span>Carr&eacute;</span>
+                                </div>
+                            </label>
+                            <label class="shape-option">
+                                <input type="radio" name="shape" value="triangle">
+                                <div class="shape-box">
+                                    <div class="shape-preview shape-triangle"></div>
+                                    <span>Triangle</span>
+                                </div>
+                            </label>
+                            <label class="shape-option">
+                                <input type="radio" name="shape" value="ovale">
+                                <div class="shape-box">
+                                    <div class="shape-preview shape-ovale"></div>
+                                    <span>Ovale</span>
+                                </div>
+                            </label>
+                            <label class="shape-option">
+                                <input type="radio" name="shape" value="rond">
+                                <div class="shape-box">
+                                    <div class="shape-preview shape-rond"></div>
+                                    <span>Rond</span>
+                                </div>
+                            </label>
+                            <label class="shape-option">
+                                <input type="radio" name="shape" value="contour">
+                                <div class="shape-box">
+                                    <div class="shape-preview shape-contour"></div>
+                                    <span>Contour image</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="config-section">
+                        <h3>3. Couleur du cadre</h3>
+                        <select id="colorSelect" name="color" class="color-dropdown">
+                            <option value="noir" data-color="#1a1a1a" selected>Noir</option>
+                            <option value="blanc" data-color="#f5f5f5">Blanc</option>
+                            <option value="gris" data-color="#808080">Gris</option>
+                            <option value="bois-clair" data-color="#D2B48C">Bois clair</option>
+                            <option value="bois-fonce" data-color="#8B4513">Bois fonc&#233;</option>
+                            <option value="rouge" data-color="#C0392B">Rouge</option>
+                            <option value="bleu-nuit" data-color="#1B2631">Bleu nuit</option>
+                            <option value="bleu-ciel" data-color="#5DADE2">Bleu ciel</option>
+                            <option value="vert-foret" data-color="#1E8449">Vert for&#234;t</option>
+                            <option value="vert-sauge" data-color="#A9B9A3">Vert sauge</option>
+                            <option value="rose" data-color="#E8A0BF">Rose</option>
+                            <option value="violet" data-color="#7D3C98">Violet</option>
+                            <option value="jaune-moutarde" data-color="#D4AC0D">Moutarde</option>
+                            <option value="orange" data-color="#E67E22">Orange</option>
+                            <option value="beige" data-color="#C7ADA5">Beige</option>
+                            <option value="bordeaux" data-color="#78281F">Bordeaux</option>
+                            <option value="turquoise" data-color="#1ABC9C">Turquoise</option>
+                            <option value="or" data-color="#D4AF37">Or</option>
+                            <option value="argent" data-color="#C0C0C0">Argent</option>
+                            <option value="cuivre" data-color="#B87333">Cuivre</option>
+                        </select>
+                        <div class="color-preview-dot" id="colorPreviewDot" style="background:#1a1a1a;"></div>
+                    </div>
+
+                    <div class="config-section">
+                        <h3>4. Type d'éclairage LED</h3>
+                        <div class="led-options">
+                            <label class="led-option">
+                                <input type="radio" name="led" value="blanc-chaud" checked>
+                                <div class="led-box">
+                                    <div class="led-preview" style="background: #FFE4B5;"></div>
+                                    <span>Blanc chaud</span>
+                                </div>
+                            </label>
+                            <label class="led-option">
+                                <input type="radio" name="led" value="blanc-froid">
+                                <div class="led-box">
+                                    <div class="led-preview" style="background: #F0F8FF;"></div>
+                                    <span>Blanc froid</span>
+                                </div>
+                            </label>
+                            <label class="led-option">
+                                <input type="radio" name="led" value="rgb" data-extra="5">
+                                <div class="led-box">
+                                    <div class="led-preview" style="background: linear-gradient(90deg, #ff0000, #00ff00, #0000ff);"></div>
+                                    <span>RGB (+5€)</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="config-section">
+                        <h3>5. Uploadez votre fichier</h3>
+                        <div class="upload-zone" id="uploadZone">
+                            <div class="upload-content">
+                                <span class="upload-icon">📁</span>
+                                <p><strong>Cliquez pour choisir</strong> ou glissez votre fichier ici</p>
+                                <span class="upload-info">Tous formats acceptés : JPG, PNG, PDF, SVG, AI, PSD, STL... • Max 50 Mo</span>
+                            </div>
+                            <input type="file" id="photoUpload" hidden>
+                        </div>
+                        <div class="upload-preview" id="uploadPreview" style="display: none;">
+                            <div id="previewContent"></div>
+                            <button class="remove-photo" id="removePhoto">✕ Supprimer</button>
+                        </div>
+                    </div>
+
+                    <div class="config-section">
+                        <h3>6. Texte personnalisé (optionnel)</h3>
+                        <input type="text" class="text-input" id="customText" placeholder="Ex: Notre famille, 2024..." maxlength="30">
+                        <span class="input-hint">Maximum 30 caractères</span>
+                    </div>
+
+                    <div class="config-section">
+                        <h3>7. Informations complémentaires (optionnel)</h3>
+                        <textarea class="text-input" id="extraInfo" placeholder="Précisez ici toute demande particulière : retouche photo, recadrage, style souhaité, date de livraison souhaitée, message cadeau..." rows="4" style="resize:vertical;min-height:80px;"></textarea>
+                        <span class="input-hint">Toute info utile pour personnaliser au mieux votre lightbox</span>
+                    </div>
+
+                    <!-- Quantité et Ajout panier -->
+                    <div class="purchase-section">
+                        <div class="quantity-selector">
+                            <button class="qty-btn" id="qtyMinus">−</button>
+                            <input type="number" value="1" min="1" max="10" id="quantity">
+                            <button class="qty-btn" id="qtyPlus">+</button>
+                        </div>
+                        <button class="btn btn-primary btn-lg add-to-cart" id="addToCart">
+                            <span>Commander maintenant</span>
+                            <span class="btn-price" id="btnPrice">49,99€</span>
+                        </button>
+                    </div>
+
+                    <div class="trust-badges">
+                        <div class="trust-item">
+                            <span>🚚</span>
+                            <span>Livraison 5-7 jours</span>
+                        </div>
+                        <div class="trust-item">
+                            <span>✅</span>
+                            <span>Satisfait ou remboursé</span>
+                        </div>
+                        <div class="trust-item">
+                            <span>🔒</span>
+                            <span>Paiement sécurisé</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comment ça marche -->
+    <section class="lightbox-process">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Simple et rapide</span>
+                <h2>Comment créer votre Lightbox ?</h2>
+            </div>
+            <div class="process-grid">
+                <div class="process-step">
+                    <div class="process-icon">📸</div>
+                    <div class="process-number">1</div>
+                    <h3>Envoyez votre photo</h3>
+                    <p>Uploadez votre photo préférée en haute résolution</p>
+                </div>
+                <div class="process-step">
+                    <div class="process-icon">🎨</div>
+                    <div class="process-number">2</div>
+                    <h3>Je crée l'illustration</h3>
+                    <p>Transformation artistique de votre photo en style lithophane</p>
+                </div>
+                <div class="process-step">
+                    <div class="process-icon">🖨️</div>
+                    <div class="process-number">3</div>
+                    <h3>Impression 3D</h3>
+                    <p>Fabrication soignée avec finitions premium</p>
+                </div>
+                <div class="process-step">
+                    <div class="process-icon">📦</div>
+                    <div class="process-number">4</div>
+                    <h3>Livraison chez vous</h3>
+                    <p>Emballage sécurisé et expédition rapide</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Exemples de réalisations -->
+    <section class="lightbox-examples">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Avant / Après</span>
+                <h2>Du fichier au résultat final</h2>
+            </div>
+            <div class="examples-grid">
+                <div class="example-step">
+                    <div class="example-number">1</div>
+                    <div class="example-image">
+                        <img src="etape-exemple.png" alt="Exemple fichier">
+                    </div>
+                    <h3>Exemple</h3>
+                    <p>Votre fichier ou idée de départ</p>
+                </div>
+                <div class="example-arrow">→</div>
+                <div class="example-step">
+                    <div class="example-number">2</div>
+                    <div class="example-image">
+                        <img src="etape-configuration.png" alt="Configuration">
+                    </div>
+                    <h3>Configuration</h3>
+                    <p>Choix des options et personnalisation</p>
+                </div>
+                <div class="example-arrow">→</div>
+                <div class="example-step">
+                    <div class="example-number">3</div>
+                    <div class="example-image">
+                        <img src="etape-resultat.png" alt="Résultat">
+                    </div>
+                    <h3>Résultat</h3>
+                    <p>Votre lightbox personnalisée terminée</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Caractéristiques -->
+    <section class="lightbox-features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">💎</span>
+                    <h3>Qualité Premium</h3>
+                    <p>Impression haute résolution avec un rendu exceptionnel des détails et des dégradés.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">💡</span>
+                    <h3>LED Longue Durée</h3>
+                    <p>Éclairage LED basse consommation avec une durée de vie de plus de 50 000 heures.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🔌</span>
+                    <h3>USB ou Secteur</h3>
+                    <p>Alimentation flexible : branchez en USB ou sur secteur selon vos préférences.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🎁</span>
+                    <h3>Idée Cadeau</h3>
+                    <p>Le cadeau parfait pour immortaliser vos souvenirs de façon originale.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Témoignages -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Avis clients</span>
+                <h2>Ils ont adoré leur Lightbox</h2>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p>"J'ai offert une lightbox avec notre photo de mariage à mon mari. Il était ému aux larmes ! Le rendu est magnifique."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">L</div>
+                        <div class="author-info">
+                            <span class="author-name">Laura M.</span>
+                            <span class="author-purchase">Lightbox taille L</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p>"Commandé pour immortaliser mon chien. La qualité est incroyable, on voit chaque détail. Livraison rapide en plus !"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">K</div>
+                        <div class="author-info">
+                            <span class="author-name">Kevin D.</span>
+                            <span class="author-purchase">Lightbox taille M</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p>"3ème commande ! J'en ai offert à toute ma famille. Le rapport qualité/prix est imbattable. Je recommande à 200%."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">S</div>
+                        <div class="author-info">
+                            <span class="author-name">Sophie R.</span>
+                            <span class="author-purchase">Client fidèle</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="lightbox-faq">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">FAQ</span>
+                <h2>Questions fréquentes</h2>
+            </div>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <h3>📁 Quels formats de fichiers puis-je envoyer ?</h3>
+                    <p>Tous les formats sont acceptés : images (JPG, PNG, SVG), fichiers design (AI, PSD, PDF), fichiers 3D (STL, OBJ, 3MF)... Pour un résultat optimal avec les images, envoyez une photo en haute résolution. Pour les autres formats, je m'adapte à votre fichier.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>⏱️ Quels sont les délais de fabrication ?</h3>
+                    <p>Comptez 3-5 jours pour la fabrication, puis 2-3 jours de livraison. Vous recevrez votre lightbox sous 5-8 jours ouvrés au total.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>🔌 Comment fonctionne l'alimentation ?</h3>
+                    <p>Votre lightbox est livrée avec un câble USB. Vous pouvez la brancher sur un adaptateur secteur, un ordinateur, ou une batterie externe.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>🎨 Puis-je avoir un aperçu avant fabrication ?</h3>
+                    <p>Oui ! Après votre commande, je vous envoie un aperçu de la transformation de votre photo pour validation avant impression.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>↩️ Que faire si je ne suis pas satisfait ?</h3>
+                    <p>Votre satisfaction est ma priorité. Si le produit ne correspond pas à vos attentes, contactez-moi sous 14 jours pour un remboursement ou une nouvelle fabrication.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Prêt à créer votre Lightbox ?</h2>
+                <p>Immortalisez vos plus beaux souvenirs avec une lampe LED personnalisée unique.</p>
+                <a href="#" class="btn btn-white btn-lg" onclick="document.querySelector('.product-hero').scrollIntoView({behavior: 'smooth'}); return false;">Créer ma Lightbox</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">Tommy<span>3D</span></a>
+                    <p>Créations uniques imprimées en 3D avec passion et savoir-faire.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="lightbox.html">Créer ma Lightbox</a></li>
+                        <li><a href="commander.html">Boutique</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Informations</h4>
+                    <ul>
+                        <li><a href="#">CGV</a></li>
+                        <li><a href="#">Politique de confidentialité</a></li>
+                        <li><a href="#">Retours & Remboursements</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <p>contact@tommy3d.fr</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">Instagram</a>
+                        <a href="#" class="social-link">TikTok</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Tommy3D. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to top -->
+    <button class="scroll-top" id="scrollTop" aria-label="Retour en haut">↑</button>
+
+    <script src="script.js?v=3"></script>
+    <script src="lightbox.js?v=5"></script>
+</body>
+</html>

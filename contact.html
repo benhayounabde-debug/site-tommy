@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Tommy 3D</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Barre d'annonce -->
+    <div class="announcement-bar">
+        <p>🚀 Livraison rapide en 3-5 jours ouvrés | <span class="highlight">-10% avec le code BIENVENUE</span></p>
+    </div>
+
+    <!-- Navigation -->
+    <header class="header">
+        <nav class="nav container">
+            <a href="index.html" class="logo">Tommy<span>3D</span></a>
+            <button class="mobile-menu-btn" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="lightbox.html">Créer ma Lightbox</a></li>
+                <li><a href="commander.html">Boutique</a></li>
+                <li><a href="mes-commandes.html">Mes Commandes</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="commander.html" class="btn btn-primary">Voir la boutique</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <span class="section-badge">Contact</span>
+            <h1>Parlons de votre projet</h1>
+            <p>Une question ? Une idée de création personnalisée ? Je suis là pour vous aider !</p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h2>Comment puis-je vous aider ?</h2>
+                    <p>Que ce soit pour une commande, une question sur mes créations ou un projet sur mesure, n'hésitez pas à me contacter. Je réponds généralement sous 24-48h.</p>
+
+                    <div class="info-item">
+                        <div class="info-icon">📧</div>
+                        <div class="info-content">
+                            <h3>Email</h3>
+                            <p>contact@tommy3d.fr</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">📍</div>
+                        <div class="info-content">
+                            <h3>Localisation</h3>
+                            <p>France - Livraison nationale</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">⏰</div>
+                        <div class="info-content">
+                            <h3>Délai de réponse</h3>
+                            <p>24-48h en moyenne</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">📱</div>
+                        <div class="info-content">
+                            <h3>Réseaux sociaux</h3>
+                            <p>Suivez-moi sur Instagram et TikTok pour voir mes dernières créations</p>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 32px; padding: 24px; background: var(--light-gray); border-radius: 16px;">
+                        <h3 style="margin-bottom: 12px; font-size: 16px;">💡 Astuce</h3>
+                        <p style="font-size: 14px; color: var(--text-light); margin: 0;">Pour une demande de création personnalisée, pensez à inclure des photos ou croquis de référence. Cela m'aidera à mieux comprendre votre vision !</p>
+                    </div>
+                </div>
+
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <!-- Récapitulatif produit (affiché si on vient de la boutique) -->
+                        <div class="order-recap" id="orderRecap" style="display: none;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <h3 style="font-size: 16px; margin: 0;">Votre sélection</h3>
+                                <button type="button" id="btnModifierCommande" onclick="modifierCommande()" style="background: none; border: 1px solid var(--primary); color: var(--primary); padding: 6px 16px; border-radius: 8px; font-size: 13px; cursor: pointer; font-family: inherit; transition: all 0.3s;">Modifier</button>
+                            </div>
+                            <div id="orderRecapContent"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name">Nom complet *</label>
+                            <input type="text" id="name" name="name" placeholder="Votre nom" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" placeholder="votre@email.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject">Sujet</label>
+                            <select id="subject" name="subject">
+                                <option value="">Choisir un sujet...</option>
+                                <option value="commande">Question sur une commande</option>
+                                <option value="personnalisation">Demande de création personnalisée</option>
+                                <option value="devis">Demande de devis</option>
+                                <option value="autre">Autre</option>
+                            </select>
+                        </div>
+
+                        <!-- Choix filament -->
+                        <div class="form-group">
+                            <label for="filament">Type de filament</label>
+                            <select id="filament" name="filament">
+                                <option value="">Choisir un filament...</option>
+                                <option value="pla">PLA — Idéal pour la déco, lisse et écologique</option>
+                                <option value="pla+">PLA+ — Plus solide que le PLA, bon compromis</option>
+                                <option value="petg">PETG — Résistant aux chocs et à la chaleur</option>
+                                <option value="abs">ABS — Très robuste, résiste aux hautes températures</option>
+                                <option value="tpu">TPU — Flexible et souple, idéal pour les coques</option>
+                                <option value="conseil">Je ne sais pas, conseillez-moi</option>
+                            </select>
+                            <span class="input-hint" id="filamentHint">Le filament détermine la solidité, la texture et la résistance de votre pièce.</span>
+                        </div>
+
+                        <!-- Choix buse -->
+                        <div class="form-group">
+                            <label for="buse">Taille de la buse</label>
+                            <select id="buse" name="buse">
+                                <option value="">Choisir une taille de buse...</option>
+                                <option value="0.2">0.2 mm — Ultra détaillé, finition très fine (figurines, miniatures) (+10€)</option>
+                                <option value="0.4">0.4 mm — Standard, bon équilibre détail/solidité</option>
+                                <option value="0.6">0.6 mm — Impression rapide, pièces plus solides</option>
+                                <option value="0.8">0.8 mm — Grandes pièces, très robuste</option>
+                                <option value="conseil">Je ne sais pas, conseillez-moi</option>
+                            </select>
+                            <span class="input-hint" id="buseHint">La buse définit le niveau de détail : plus elle est petite, plus les détails sont fins.</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" placeholder="Décrivez votre demande en détail : couleur souhaitée, dimensions, usage prévu..." required></textarea>
+                        </div>
+
+                        <div class="form-group" id="budgetGroup">
+                            <label for="budget">Budget estimé (optionnel)</label>
+                            <select id="budget" name="budget">
+                                <option value="">Sélectionner...</option>
+                                <option value="moins-20">Moins de 20€</option>
+                                <option value="20-50">20€ - 50€</option>
+                                <option value="50-100">50€ - 100€</option>
+                                <option value="plus-100">Plus de 100€</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+                            Envoyer le message
+                        </button>
+
+                        <p style="text-align: center; margin-top: 16px; font-size: 12px; color: var(--text-light);">
+                            * Champs obligatoires. Vos données sont traitées conformément à notre politique de confidentialité.
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section style="padding: 60px 0; background: var(--light-gray);">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">FAQ</span>
+                <h2>Questions fréquentes</h2>
+            </div>
+
+            <div style="max-width: 700px; margin: 0 auto;">
+                <div style="background: white; padding: 24px; border-radius: 16px; margin-bottom: 16px;">
+                    <h3 style="font-size: 16px; margin-bottom: 12px;">📦 Quels sont les délais de livraison ?</h3>
+                    <p style="font-size: 14px; color: var(--text-light); margin: 0;">Les délais varient selon la complexité de la pièce. Comptez en général 3-5 jours ouvrés pour les produits standards et 7-14 jours pour les créations personnalisées.</p>
+                </div>
+
+                <div style="background: white; padding: 24px; border-radius: 16px; margin-bottom: 16px;">
+                    <h3 style="font-size: 16px; margin-bottom: 12px;">🎨 Puis-je choisir la couleur de ma création ?</h3>
+                    <p style="font-size: 14px; color: var(--text-light); margin: 0;">Oui ! La plupart de mes créations sont disponibles dans plusieurs coloris. Si vous avez une couleur spécifique en tête, mentionnez-le dans votre commande.</p>
+                </div>
+
+                <div style="background: white; padding: 24px; border-radius: 16px; margin-bottom: 16px;">
+                    <h3 style="font-size: 16px; margin-bottom: 12px;">💰 Comment fonctionne le paiement ?</h3>
+                    <p style="font-size: 14px; color: var(--text-light); margin: 0;">Pour les créations personnalisées, un acompte de 50% est demandé à la validation du devis. Le solde est à régler avant l'expédition. Pour les produits standards, le paiement s'effectue à la commande.</p>
+                </div>
+
+                <div style="background: white; padding: 24px; border-radius: 16px; margin-bottom: 16px;">
+                    <h3 style="font-size: 16px; margin-bottom: 12px;">🔄 Quelle est votre politique de retour ?</h3>
+                    <p style="font-size: 14px; color: var(--text-light); margin: 0;">Les créations personnalisées ne sont pas remboursables. Pour les produits standards, vous disposez de 14 jours pour retourner un article non utilisé dans son emballage d'origine.</p>
+                </div>
+
+                <div style="background: white; padding: 24px; border-radius: 16px;">
+                    <h3 style="font-size: 16px; margin-bottom: 12px;">🌍 Livrez-vous à l'international ?</h3>
+                    <p style="font-size: 14px; color: var(--text-light); margin: 0;">Actuellement, je livre principalement en France métropolitaine. Pour les envois internationaux, contactez-moi pour étudier la faisabilité et obtenir un devis de livraison.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">Tommy<span>3D</span></a>
+                    <p>Créations uniques imprimées en 3D avec passion et savoir-faire.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="lightbox.html">Créer ma Lightbox</a></li>
+                        <li><a href="commander.html">Boutique</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Informations</h4>
+                    <ul>
+                        <li><a href="#">CGV</a></li>
+                        <li><a href="#">Politique de confidentialité</a></li>
+                        <li><a href="#">Retours & Remboursements</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <p>contact@tommy3d.fr</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">Instagram</a>
+                        <a href="#" class="social-link">TikTok</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Tommy3D. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to top -->
+    <button class="scroll-top" id="scrollTop" aria-label="Retour en haut">↑</button>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+    <script>
+    function modifierCommande() {
+        const productOrder = localStorage.getItem('productOrder');
+        const lightboxOrder = localStorage.getItem('lightboxOrder');
+        if (lightboxOrder) {
+            window.location.href = 'lightbox.html';
+        } else {
+            window.location.href = 'commander.html';
+        }
+    }
+
+    // Afficher le récapitulatif si on vient de la boutique ou de la lightbox
+    document.addEventListener('DOMContentLoaded', function() {
+        const productOrder = localStorage.getItem('productOrder');
+        const lightboxOrder = localStorage.getItem('lightboxOrder');
+        const recapDiv = document.getElementById('orderRecap');
+        const recapContent = document.getElementById('orderRecapContent');
+        const messageField = document.getElementById('message');
+        const subjectField = document.getElementById('subject');
+
+        // Descriptions dynamiques filament
+        const filamentDescs = {
+            'pla': 'Le PLA est parfait pour les objets décoratifs. Finition lisse, large choix de couleurs, matériau écologique à base de maïs. Ne résiste pas à la chaleur (>60°C).',
+            'pla+': 'Le PLA+ offre une meilleure résistance que le PLA standard. Idéal pour les objets du quotidien qui demandent un peu plus de solidité tout en gardant une belle finition.',
+            'petg': 'Le PETG est résistant aux chocs et à la chaleur (~80°C). Parfait pour les pièces fonctionnelles, supports, ou objets en contact avec la chaleur (bougeoirs, accessoires cuisine).',
+            'abs': "L'ABS est très robuste et résiste à des températures élevées (~100°C). Idéal pour des pièces mécaniques ou d'usage intensif. Finition légèrement mate.",
+            'tpu': 'Le TPU est un filament flexible et souple. Parfait pour les coques de téléphone, joints, ou toute pièce nécessitant de la souplesse et de la résistance aux chocs.',
+            'conseil': 'Pas de souci ! Décrivez l\'usage prévu dans votre message et je vous recommanderai le filament le plus adapté.'
+        };
+
+        const buseDescs = {
+            '0.2': 'Buse 0.2 mm : impression ultra détaillée. Idéale pour les figurines, miniatures et pièces avec des gravures fines. Temps d\'impression plus long.',
+            '0.4': 'Buse 0.4 mm : le standard. Bon équilibre entre qualité de détail et temps d\'impression. Convient à la majorité des projets.',
+            '0.6': 'Buse 0.6 mm : impression plus rapide et couches plus épaisses. Les pièces sont plus solides. Idéale pour les objets de taille moyenne sans détails fins.',
+            '0.8': 'Buse 0.8 mm : pour les grandes pièces et prototypes. Impression très rapide, structure très solide. Moins de détails visibles.',
+            'conseil': 'Pas de souci ! Décrivez votre projet dans le message et je choisirai la buse la plus adaptée.'
+        };
+
+        document.getElementById('filament').addEventListener('change', function() {
+            document.getElementById('filamentHint').textContent = filamentDescs[this.value] || 'Le filament détermine la solidité, la texture et la résistance de votre pièce.';
+        });
+
+        document.getElementById('buse').addEventListener('change', function() {
+            document.getElementById('buseHint').textContent = buseDescs[this.value] || 'La buse définit le niveau de détail : plus elle est petite, plus les détails sont fins.';
+        });
+
+        if (productOrder) {
+            const order = JSON.parse(productOrder);
+            recapDiv.style.display = 'block';
+            recapContent.innerHTML = `
+                <div class="recap-item"><strong>${order.produit}</strong> — ${order.prix}</div>
+                <div class="recap-specs">${order.specs.join(' • ')}</div>
+                ${order.fichier ? '<div class="recap-file">Fichier joint : ' + order.fichier + '</div>' : ''}
+            `;
+            subjectField.value = 'commande';
+            messageField.placeholder = 'Précisez la couleur, la taille ou toute demande particulière...';
+        } else if (lightboxOrder) {
+            const order = JSON.parse(lightboxOrder);
+            recapDiv.style.display = 'block';
+            recapContent.innerHTML = `
+                <div class="recap-item"><strong>Lightbox Personnalisée</strong> — ${order.price}</div>
+                <div class="recap-specs">Taille ${order.size} • Forme ${order.shape || 'rectangle'} • Cadre ${order.color} • LED ${order.led} • Qté: ${order.quantity}</div>
+                ${order.text ? '<div class="recap-file">Texte : ' + order.text + '</div>' : ''}
+                ${order.fileName ? '<div class="recap-file">Fichier : ' + order.fileName + '</div>' : ''}
+                ${order.extraInfo ? '<div class="recap-file">Infos complémentaires : ' + order.extraInfo + '</div>' : ''}
+            `;
+            subjectField.value = 'commande';
+            document.getElementById('budgetGroup').style.display = 'none';
+        }
+
+        // === FIREBASE: Soumission du formulaire ===
+        if (typeof db !== 'undefined') {
+            const form = document.getElementById('contactForm');
+            // Remove old handler by cloning
+            const newForm = form.cloneNode(true);
+            form.parentNode.replaceChild(newForm, form);
+
+            // Re-hide budget for lightbox after clone
+            if (lightboxOrder) {
+                newForm.querySelector('#budgetGroup').style.display = 'none';
+            }
+
+            // Re-attach dynamic hints after clone
+            newForm.querySelector('#filament').addEventListener('change', function() {
+                document.getElementById('filamentHint').textContent = filamentDescs[this.value] || 'Le filament détermine la solidité, la texture et la résistance de votre pièce.';
+            });
+            newForm.querySelector('#buse').addEventListener('change', function() {
+                document.getElementById('buseHint').textContent = buseDescs[this.value] || 'La buse définit le niveau de détail : plus elle est petite, plus les détails sont fins.';
+            });
+
+            newForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const name = newForm.querySelector('#name').value.trim();
+                const email = newForm.querySelector('#email').value.trim();
+                const message = newForm.querySelector('#message').value.trim();
+                const subject = newForm.querySelector('#subject').value;
+                const filament = newForm.querySelector('#filament').value;
+                const buse = newForm.querySelector('#buse').value;
+                const budget = newForm.querySelector('#budget').value;
+
+                if (!name || !email || !message) {
+                    showNotification('Veuillez remplir tous les champs obligatoires.', 'error');
+                    return;
+                }
+
+                const btn = newForm.querySelector('button[type="submit"]');
+                btn.textContent = 'Envoi en cours...';
+                btn.disabled = true;
+
+                // Build order data
+                let orderData = null;
+                const po = localStorage.getItem('productOrder');
+                const lo = localStorage.getItem('lightboxOrder');
+                if (po) orderData = { type: 'product', ...JSON.parse(po) };
+                else if (lo) orderData = { type: 'lightbox', ...JSON.parse(lo) };
+
+                // Sauvegarder l'email pour la page Mes Commandes
+                localStorage.setItem('tommy3d_email', email);
+
+                try {
+                    const msgRef = await db.collection('messages').add({
+                        name, email, subject, filament, buse, message, budget,
+                        orderData: orderData,
+                        status: 'nouveau',
+                        notes: '',
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+
+                    if (orderData) {
+                        const priceStr = orderData.prix || orderData.price || '0';
+                        const priceNum = parseFloat(priceStr.replace(',', '.').match(/(\d+\.?\d*)/)?.[1] || 0);
+                        const trackingId = crypto.randomUUID().split('-')[0];
+                        const orderRef = await db.collection('orders').add({
+                            type: orderData.type,
+                            productName: orderData.produit || 'Lightbox Personnalisée',
+                            price: priceStr,
+                            priceNumeric: priceNum,
+                            specs: orderData.specs || [],
+                            fichier: orderData.fichier || orderData.fileName || null,
+                            fileUrl: orderData.fileUrl || null,
+                            size: orderData.size || null,
+                            shape: orderData.shape || null,
+                            color: orderData.color || null,
+                            led: orderData.led || null,
+                            quantity: orderData.quantity || 1,
+                            text: orderData.text || null,
+                            extraInfo: orderData.extraInfo || null,
+                            customerName: name,
+                            customerEmail: email,
+                            status: 'nouveau',
+                            messageId: msgRef.id,
+                            notes: '',
+                            trackingId: trackingId,
+                            paymentLink: '',
+                            paymentStatus: 'en_attente',
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+
+                        // Sauvegarder le trackingId pour la page Mes Commandes
+                        const savedIds = JSON.parse(localStorage.getItem('tommy3d_orders') || '[]');
+                        savedIds.push(trackingId);
+                        localStorage.setItem('tommy3d_orders', JSON.stringify(savedIds));
+
+                        showNotification('Commande envoyée ! Votre numéro de suivi : ' + trackingId, 'success');
+                        // Afficher le lien de suivi
+                        const suiviUrl = window.location.origin + '/suivi.html?id=' + trackingId;
+                        const recapEl = document.getElementById('orderRecap');
+                        recapEl.innerHTML = '<div style="text-align:center;padding:24px;"><h3 style="color:#27ae60;margin-bottom:12px;">Commande envoyée !</h3><p>Votre numéro de suivi :</p><p style="font-size:24px;font-weight:700;letter-spacing:2px;margin:12px 0;">' + trackingId + '</p><a href="' + suiviUrl + '" target="_blank" style="color:#C7ADA5;font-weight:600;">Suivre ma commande</a></div>';
+                        recapEl.style.display = 'block';
+                    } else {
+                        showNotification('Message envoyé avec succès ! Je vous répondrai rapidement.', 'success');
+                    }
+
+                    newForm.reset();
+                    localStorage.removeItem('productOrder');
+                    localStorage.removeItem('lightboxOrder');
+                } catch (err) {
+                    console.error('Firebase error:', err);
+                    showNotification("Erreur lors de l'envoi. Veuillez réessayer.", 'error');
+                }
+
+                btn.textContent = 'Envoyer le message';
+                btn.disabled = false;
+            });
+        }
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Tommy 3D</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #C7ADA5;
+            --primary-dark: #B89A91;
+            --secondary: #121212;
+            --accent: #DD1D1D;
+            --white: #FFFFFF;
+            --light-gray: #F3F3F3;
+            --medium-gray: #E5E5E5;
+            --dark-gray: #666666;
+            --text: #121212;
+            --text-light: #555555;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 24px;
+            --radius-full: 50px;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+            --sidebar-width: 260px;
+            --topbar-height: 64px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: var(--light-gray); color: var(--text); }
+
+        /* Login */
+        .login-screen {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, var(--secondary) 0%, #2a2a2a 100%);
+        }
+        .login-card {
+            background: var(--white); padding: 48px; border-radius: var(--radius-lg);
+            width: 100%; max-width: 400px; box-shadow: var(--shadow-md); text-align: center;
+        }
+        .login-logo { font-size: 32px; font-weight: 700; margin-bottom: 8px; }
+        .login-logo span { color: var(--primary); }
+        .login-card h2 { font-size: 18px; color: var(--text-light); margin-bottom: 32px; font-weight: 400; }
+        .login-form-group { margin-bottom: 16px; text-align: left; }
+        .login-form-group label { display: block; font-weight: 500; font-size: 14px; margin-bottom: 6px; }
+        .login-form-group input {
+            width: 100%; padding: 12px 16px; border: 2px solid var(--medium-gray);
+            border-radius: var(--radius-md); font-family: inherit; font-size: 14px;
+            transition: var(--transition);
+        }
+        .login-form-group input:focus { outline: none; border-color: var(--primary); }
+        .login-error { color: var(--accent); font-size: 13px; margin-bottom: 12px; min-height: 20px; }
+
+        /* Layout */
+        .admin-panel { display: flex; min-height: 100vh; }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width); background: var(--secondary); color: var(--white);
+            display: flex; flex-direction: column; position: fixed; top: 0; bottom: 0; left: 0; z-index: 100;
+        }
+        .sidebar-header { padding: 24px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .admin-logo { font-size: 24px; font-weight: 700; color: var(--white); text-decoration: none; }
+        .admin-logo span { color: var(--primary); }
+        .admin-badge {
+            display: inline-block; background: var(--accent); color: var(--white);
+            padding: 2px 10px; border-radius: var(--radius-full); font-size: 11px;
+            font-weight: 600; margin-left: 8px; vertical-align: middle;
+        }
+        .sidebar-nav { flex: 1; padding: 16px 0; }
+        .nav-item {
+            display: flex; align-items: center; gap: 12px; padding: 12px 24px;
+            color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 500;
+            transition: var(--transition); cursor: pointer; text-decoration: none;
+        }
+        .nav-item:hover { background: rgba(255,255,255,0.08); color: var(--white); }
+        .nav-item.active { background: rgba(255,255,255,0.12); color: var(--white); border-right: 3px solid var(--primary); }
+        .nav-icon { font-size: 18px; width: 24px; text-align: center; }
+        .nav-count {
+            margin-left: auto; background: var(--accent); color: var(--white);
+            padding: 2px 8px; border-radius: var(--radius-full); font-size: 11px; font-weight: 600;
+        }
+        .nav-count:empty { display: none; }
+        .sidebar-footer { padding: 16px 0; border-top: 1px solid rgba(255,255,255,0.1); }
+
+        /* Main */
+        .main-content { flex: 1; margin-left: var(--sidebar-width); }
+        .admin-topbar {
+            height: var(--topbar-height); background: var(--white); display: flex;
+            align-items: center; padding: 0 32px; box-shadow: var(--shadow-sm);
+            position: sticky; top: 0; z-index: 50; gap: 16px;
+        }
+        .admin-topbar h1 { font-size: 20px; font-weight: 600; }
+        .topbar-right { margin-left: auto; }
+        .admin-user { font-size: 13px; color: var(--text-light); }
+        .mobile-sidebar-toggle { display: none; background: none; border: none; font-size: 24px; cursor: pointer; }
+
+        /* Views */
+        .view-container { padding: 32px; }
+        .view { display: none; }
+        .view.active { display: block; }
+
+        /* Stats */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 32px; }
+        .stat-card {
+            background: var(--white); padding: 24px; border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 16px;
+        }
+        .stat-icon {
+            font-size: 32px; width: 56px; height: 56px; background: var(--light-gray);
+            border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;
+        }
+        .stat-value { font-size: 28px; font-weight: 700; display: block; }
+        .stat-label { font-size: 13px; color: var(--text-light); }
+
+        /* Cards */
+        .admin-card {
+            background: var(--white); border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm); padding: 24px; margin-bottom: 24px;
+        }
+        .admin-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+
+        /* Tables */
+        .table-responsive { overflow-x: auto; }
+        .admin-table { width: 100%; border-collapse: collapse; }
+        .admin-table th {
+            font-size: 12px; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.5px; color: var(--text-light); padding: 12px 16px;
+            border-bottom: 2px solid var(--medium-gray); text-align: left;
+        }
+        .admin-table td {
+            padding: 14px 16px; border-bottom: 1px solid var(--light-gray);
+            font-size: 14px; vertical-align: middle;
+        }
+        .admin-table tr:hover { background: var(--light-gray); }
+
+        /* Status */
+        .status-badge {
+            display: inline-block; padding: 4px 12px; border-radius: var(--radius-full);
+            font-size: 12px; font-weight: 600;
+        }
+        .status-nouveau { background: #E3F2FD; color: #1565C0; }
+        .status-valide { background: #E8F5E9; color: #27ae60; }
+        .status-lu { background: var(--light-gray); color: var(--text-light); }
+        .status-repondu { background: #E8F5E9; color: #2E7D32; }
+        .status-archive { background: var(--medium-gray); color: var(--dark-gray); }
+        .status-en_cours { background: #FFF3E0; color: #E65100; }
+        .status-fabrique { background: #F3E5F5; color: #6A1B9A; }
+        .status-expedie { background: #E8F5E9; color: #2E7D32; }
+        .status-livre { background: #E8F5E9; color: #1B5E20; }
+        .status-annule { background: #FFEBEE; color: #C62828; }
+
+        /* Buttons */
+        .btn-admin {
+            padding: 10px 20px; border-radius: var(--radius-full); font-family: inherit;
+            font-size: 14px; font-weight: 500; cursor: pointer; transition: var(--transition);
+            border: 2px solid transparent;
+        }
+        .btn-admin-primary { background: var(--secondary); color: var(--white); border-color: var(--secondary); }
+        .btn-admin-primary:hover { background: transparent; color: var(--secondary); }
+        .btn-admin-sm {
+            padding: 6px 14px; font-size: 12px; border-radius: var(--radius-sm);
+            border: 1px solid var(--medium-gray); background: var(--white); cursor: pointer;
+            font-family: inherit; transition: var(--transition);
+        }
+        .btn-admin-sm:hover { background: var(--light-gray); }
+        .btn-danger { background: var(--accent); color: var(--white); border-color: var(--accent); }
+        .btn-danger:hover { opacity: 0.9; }
+
+        /* Modal */
+        .modal {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+            z-index: 200; align-items: center; justify-content: center;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: var(--white); border-radius: var(--radius-lg); width: 90%; max-width: 600px;
+            max-height: 90vh; overflow-y: auto; padding: 32px;
+        }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .modal-header h2 { font-size: 20px; }
+        .modal-close { background: none; border: none; font-size: 28px; cursor: pointer; color: var(--text-light); }
+        .modal-close:hover { color: var(--text); }
+
+        /* Form groups admin */
+        .admin-form-group { margin-bottom: 16px; }
+        .admin-form-group label { display: block; font-weight: 500; font-size: 13px; margin-bottom: 6px; }
+        .admin-form-group input,
+        .admin-form-group textarea,
+        .admin-form-group select {
+            width: 100%; padding: 10px 14px; border: 2px solid var(--medium-gray);
+            border-radius: var(--radius-sm); font-family: inherit; font-size: 14px;
+            transition: var(--transition);
+        }
+        .admin-form-group input:focus,
+        .admin-form-group textarea:focus,
+        .admin-form-group select:focus { outline: none; border-color: var(--primary); }
+        .admin-form-group textarea { min-height: 80px; resize: vertical; }
+
+        /* Products grid admin */
+        .products-admin-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .product-admin-card {
+            background: var(--white); border-radius: var(--radius-md); overflow: hidden;
+            box-shadow: var(--shadow-sm); transition: var(--transition);
+        }
+        .product-admin-card:hover { box-shadow: var(--shadow-md); }
+        .product-admin-image {
+            height: 160px; background: var(--light-gray); display: flex;
+            align-items: center; justify-content: center; font-size: 48px; overflow: hidden;
+        }
+        .product-admin-image img { width: 100%; height: 100%; object-fit: cover; }
+        .product-admin-info { padding: 16px; }
+        .product-admin-info h4 { font-size: 16px; margin-bottom: 4px; }
+        .product-admin-category { font-size: 12px; color: var(--text-light); margin-bottom: 8px; display: block; }
+        .product-admin-price { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+        .product-admin-actions { display: flex; gap: 8px; }
+
+        /* View header */
+        .view-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+        .filter-bar select {
+            padding: 8px 14px; border: 2px solid var(--medium-gray); border-radius: var(--radius-sm);
+            font-family: inherit; font-size: 13px; background: var(--white); cursor: pointer;
+        }
+
+        /* Detail info */
+        .detail-row { display: flex; gap: 8px; margin-bottom: 12px; font-size: 14px; }
+        .detail-label { font-weight: 600; min-width: 100px; color: var(--text-light); }
+        .detail-value { flex: 1; }
+        .detail-message {
+            background: var(--light-gray); padding: 16px; border-radius: var(--radius-md);
+            margin: 16px 0; font-size: 14px; line-height: 1.7;
+        }
+
+        /* Empty state */
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--text-light); }
+        .empty-state span { font-size: 48px; display: block; margin-bottom: 16px; }
+
+        /* Toast notification */
+        .toast-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+            z-index: 300; align-items: center; justify-content: center;
+        }
+        .toast-overlay.active { display: flex; }
+        .toast-box {
+            background: var(--white); border-radius: var(--radius-lg); padding: 40px;
+            text-align: center; max-width: 440px; width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2); animation: toastIn 0.3s ease;
+        }
+        @keyframes toastIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .toast-icon { font-size: 56px; margin-bottom: 16px; display: block; }
+        .toast-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+        .toast-msg { font-size: 14px; color: var(--text-light); margin-bottom: 24px; line-height: 1.6; }
+        .toast-close {
+            padding: 12px 40px; background: var(--secondary); color: var(--white);
+            border: none; border-radius: var(--radius-full); font-family: inherit;
+            font-size: 14px; font-weight: 600; cursor: pointer; transition: var(--transition);
+        }
+        .toast-close:hover { opacity: 0.85; }
+
+        /* Checkbox inline */
+        .checkbox-row { display: flex; align-items: center; gap: 8px; }
+        .checkbox-row input[type="checkbox"] { width: auto; }
+        .checkbox-row label { margin: 0; }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .products-admin-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .mobile-sidebar-toggle { display: block; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .products-admin-grid { grid-template-columns: 1fr; }
+            .view-container { padding: 16px; }
+            .admin-topbar { padding: 0 16px; }
+            .login-card { margin: 20px; padding: 32px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOGIN -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-card">
+            <div class="login-logo">Tommy<span>3D</span></div>
+            <h2>Espace Admin</h2>
+            <form id="loginForm">
+                <div class="login-form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" placeholder="admin@tommy3d.fr" required>
+                </div>
+                <div class="login-form-group">
+                    <label for="loginPassword">Mot de passe</label>
+                    <input type="password" id="loginPassword" placeholder="Mot de passe" required>
+                </div>
+                <p class="login-error" id="loginError"></p>
+                <button type="submit" class="btn-admin btn-admin-primary" style="width:100%;">Se connecter</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ADMIN PANEL -->
+    <div id="adminPanel" class="admin-panel" style="display:none;">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="admin-logo">Tommy<span>3D</span></a>
+                <span class="admin-badge">Admin</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-view="dashboard">
+                    <span class="nav-icon">📊</span> Tableau de bord
+                </a>
+                <a href="#" class="nav-item" data-view="orders">
+                    <span class="nav-icon">📦</span> Commandes
+                    <span class="nav-count" id="ordersCount"></span>
+                </a>
+                <a href="#" class="nav-item" data-view="products">
+                    <span class="nav-icon">🛍️</span> Produits
+                </a>
+                <a href="#" class="nav-item" data-view="lightbox">
+                    <span class="nav-icon">💡</span> Lightbox
+                </a>
+                <a href="#" class="nav-item" data-view="messages">
+                    <span class="nav-icon">💬</span> Messages
+                    <span class="nav-count" id="messagesCount"></span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="index.html" class="nav-item"><span class="nav-icon">🌐</span> Voir le site</a>
+                <a href="#" class="nav-item" id="logoutBtn"><span class="nav-icon">🚪</span> Deconnexion</a>
+            </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="main-content">
+            <header class="admin-topbar">
+                <button class="mobile-sidebar-toggle" id="sidebarToggle">☰</button>
+                <h1 id="pageTitle">Tableau de bord</h1>
+                <div class="topbar-right">
+                    <span class="admin-user" id="adminEmail"></span>
+                </div>
+            </header>
+
+            <div class="view-container">
+
+                <!-- DASHBOARD -->
+                <div id="view-dashboard" class="view active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">📦</div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="statOrders">0</span>
+                                <span class="stat-label">Commandes</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">💬</div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="statMessages">0</span>
+                                <span class="stat-label">Nouveaux messages</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">💰</div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="statRevenue">0€</span>
+                                <span class="stat-label">Revenu estimé</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⭐</div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="statPopular">-</span>
+                                <span class="stat-label">Produit populaire</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="admin-card">
+                        <h3>Dernières commandes</h3>
+                        <div id="recentOrders"></div>
+                    </div>
+                    <div class="admin-card">
+                        <h3>Derniers messages</h3>
+                        <div id="recentMessages"></div>
+                    </div>
+                </div>
+
+                <!-- ORDERS -->
+                <div id="view-orders" class="view">
+                    <div class="view-header">
+                        <h2 style="font-size:16px;">Toutes les commandes</h2>
+                        <select id="orderStatusFilter" onchange="loadOrders()">
+                            <option value="">Tous les statuts</option>
+                            <option value="nouveau">Nouveau</option>
+                            <option value="valide">Validé</option>
+                            <option value="en_cours">En cours</option>
+                            <option value="fabrique">Fabriqué</option>
+                            <option value="expedie">Expédié</option>
+                            <option value="livre">Livré</option>
+                            <option value="annule">Annulé</option>
+                        </select>
+                    </div>
+                    <div class="admin-card">
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Client</th>
+                                        <th>Produit</th>
+                                        <th>Prix</th>
+                                        <th>Statut</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ordersTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PRODUCTS -->
+                <div id="view-products" class="view">
+                    <div class="view-header">
+                        <h2 style="font-size:16px;">Catalogue produits</h2>
+                        <button class="btn-admin btn-admin-primary" onclick="openProductModal()">+ Ajouter un produit</button>
+                    </div>
+                    <div class="products-admin-grid" id="productsGrid"></div>
+                </div>
+
+                <!-- LIGHTBOX -->
+                <div id="view-lightbox" class="view">
+                    <div class="admin-card">
+                        <h3>Informations générales</h3>
+                        <div class="admin-form-group">
+                            <label>Nom du produit</label>
+                            <input type="text" id="lbName" value="Lightbox Personnalisée">
+                        </div>
+                        <div class="admin-form-group">
+                            <label>Description</label>
+                            <textarea id="lbDescription">Transformez votre photo préférée en une magnifique lampe LED rétroéclairée.</textarea>
+                        </div>
+                        <div class="admin-form-group">
+                            <label>Badge</label>
+                            <select id="lbBadge">
+                                <option value="">Aucun</option>
+                                <option value="Best-seller" selected>Best-seller</option>
+                                <option value="Nouveau">Nouveau</option>
+                                <option value="Populaire">Populaire</option>
+                                <option value="Promo">Promo</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="admin-card">
+                        <h3>Tailles & Prix</h3>
+                        <p style="font-size:13px;color:var(--text-light);margin-bottom:16px;">Modifiez les tailles disponibles et leurs prix.</p>
+                        <div class="table-responsive">
+                            <table class="admin-table" id="lbSizesTable">
+                                <thead>
+                                    <tr>
+                                        <th>Taille</th>
+                                        <th>Dimensions</th>
+                                        <th>Prix (€)</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="lbSizesBody"></tbody>
+                            </table>
+                        </div>
+                        <button class="btn-admin-sm" onclick="addLbSize()" style="margin-top:12px;">+ Ajouter une taille</button>
+                    </div>
+
+                    <div class="admin-card">
+                        <h3>Couleurs du cadre</h3>
+                        <div class="table-responsive">
+                            <table class="admin-table" id="lbColorsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Code couleur</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="lbColorsBody"></tbody>
+                            </table>
+                        </div>
+                        <button class="btn-admin-sm" onclick="addLbColor()" style="margin-top:12px;">+ Ajouter une couleur</button>
+                    </div>
+
+                    <div class="admin-card">
+                        <h3>Types d'éclairage LED</h3>
+                        <div class="table-responsive">
+                            <table class="admin-table" id="lbLedsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Supplément (€)</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="lbLedsBody"></tbody>
+                            </table>
+                        </div>
+                        <button class="btn-admin-sm" onclick="addLbLed()" style="margin-top:12px;">+ Ajouter un type LED</button>
+                    </div>
+
+                    <div class="admin-card">
+                        <h3>Prix barré & Réduction</h3>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                            <div class="admin-form-group">
+                                <label>Prix barré (affiché)</label>
+                                <input type="text" id="lbOriginalPrice" value="69,99€">
+                            </div>
+                            <div class="admin-form-group">
+                                <label>Badge réduction</label>
+                                <input type="text" id="lbDiscount" value="-29%">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="admin-card">
+                        <h3>Images</h3>
+                        <div class="admin-form-group">
+                            <label>Noms des fichiers images (séparés par virgule)</label>
+                            <input type="text" id="lbImages" value="lightbox-exemple-1.png, lightbox-exemple-2.png">
+                        </div>
+                    </div>
+
+                    <button class="btn-admin btn-admin-primary" onclick="saveLightboxConfig()" style="width:100%;margin-top:8px;">Sauvegarder la configuration Lightbox</button>
+                </div>
+
+                <!-- MESSAGES -->
+                <div id="view-messages" class="view">
+                    <div class="view-header">
+                        <h2 style="font-size:16px;">Tous les messages</h2>
+                        <select id="messageStatusFilter" onchange="loadMessages()">
+                            <option value="">Tous les statuts</option>
+                            <option value="nouveau">Nouveau</option>
+                            <option value="lu">Lu</option>
+                            <option value="repondu">Répondu</option>
+                            <option value="archive">Archivé</option>
+                        </select>
+                    </div>
+                    <div class="admin-card">
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Nom</th>
+                                        <th>Email</th>
+                                        <th>Sujet</th>
+                                        <th>Statut</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="messagesTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODALS -->
+
+    <!-- Order detail modal -->
+    <div class="modal" id="orderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Détail commande</h2>
+                <button class="modal-close" onclick="closeModal('orderModal')">&times;</button>
+            </div>
+            <div id="orderModalBody"></div>
+        </div>
+    </div>
+
+    <!-- Product modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="productModalTitle">Ajouter un produit</h2>
+                <button class="modal-close" onclick="closeModal('productModal')">&times;</button>
+            </div>
+            <form id="productForm" onsubmit="saveProduct(event)">
+                <div class="admin-form-group">
+                    <label>Nom du produit *</label>
+                    <input type="text" id="prodName" required>
+                </div>
+                <div class="admin-form-group">
+                    <label>Catégorie *</label>
+                    <select id="prodCategory" required>
+                        <option value="lightbox">Lightbox</option>
+                        <option value="decoration">Décoration Maison</option>
+                        <option value="figurines">Figurines & Gaming</option>
+                        <option value="bureau">Accessoires Bureau</option>
+                    </select>
+                </div>
+                <div class="admin-form-group">
+                    <label>Description</label>
+                    <textarea id="prodDescription"></textarea>
+                </div>
+                <div class="admin-form-group">
+                    <label>Prix (en €) *</label>
+                    <input type="number" id="prodPrice" min="0" step="0.01" required>
+                </div>
+                <div class="admin-form-group">
+                    <label>Prix affiché (ex: "À partir de 18€")</label>
+                    <input type="text" id="prodPriceDisplay">
+                </div>
+                <div class="admin-form-group">
+                    <label>Caractéristiques (une par ligne)</label>
+                    <textarea id="prodFeatures" placeholder="Filament PLA+&#10;Buse 0.4mm&#10;Choix de couleurs"></textarea>
+                </div>
+                <div class="admin-form-group">
+                    <label>Images (noms de fichiers, séparés par virgule)</label>
+                    <input type="text" id="prodImages" placeholder="vase-1.png, vase-2.png">
+                </div>
+                <div class="admin-form-group">
+                    <label>Badge</label>
+                    <select id="prodBadge">
+                        <option value="">Aucun</option>
+                        <option value="Populaire">Populaire</option>
+                        <option value="Nouveau">Nouveau</option>
+                        <option value="Best-seller">Best-seller</option>
+                    </select>
+                </div>
+                <div class="admin-form-group">
+                    <label>Lien Makerworld</label>
+                    <input type="url" id="prodUrl" placeholder="https://makerworld.com/...">
+                </div>
+                <div class="admin-form-group checkbox-row">
+                    <input type="checkbox" id="prodActive" checked>
+                    <label for="prodActive">Actif (visible sur le site)</label>
+                </div>
+                <div style="display:flex; gap:12px; justify-content:flex-end; margin-top:24px;">
+                    <button type="button" class="btn-admin-sm" onclick="closeModal('productModal')">Annuler</button>
+                    <button type="submit" class="btn-admin btn-admin-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Message detail modal -->
+    <div class="modal" id="messageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Détail message</h2>
+                <button class="modal-close" onclick="closeModal('messageModal')">&times;</button>
+            </div>
+            <div id="messageModalBody"></div>
+        </div>
+    </div>
+
+    <!-- Toast notification -->
+    <div class="toast-overlay" id="toastOverlay">
+        <div class="toast-box">
+            <span class="toast-icon" id="toastIcon"></span>
+            <div class="toast-title" id="toastTitle"></div>
+            <div class="toast-msg" id="toastMsg"></div>
+            <button class="toast-close" onclick="closeToast()">OK</button>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <script>
+    // ===== CONSTANTS =====
+    const STATUS_LABELS = {
+        nouveau: 'Nouveau', valide: 'Validé', lu: 'Lu', repondu: 'Répondu', archive: 'Archivé',
+        en_cours: 'En cours', fabrique: 'Fabriqué', expedie: 'Expédié',
+        livre: 'Livré', annule: 'Annulé'
+    };
+    const PAYMENT_LABELS = { en_attente: 'En attente', paye: 'Payé' };
+
+    // EmailJS config - À REMPLIR avec vos identifiants EmailJS
+    const EMAILJS_PUBLIC_KEY = 'VOTRE_PUBLIC_KEY';
+    const EMAILJS_SERVICE_ID = 'VOTRE_SERVICE_ID';
+    const EMAILJS_TEMPLATE_ID = 'VOTRE_TEMPLATE_ID';
+    const CATEGORY_LABELS = {
+        lightbox: 'Lightbox', decoration: 'Décoration Maison', figurines: 'Figurines & Gaming', bureau: 'Accessoires Bureau'
+    };
+    const SUBJECT_LABELS = {
+        commande: 'Commande', personnalisation: 'Personnalisation', devis: 'Devis', autre: 'Autre'
+    };
+
+    let currentEditProductId = null;
+
+    // ===== UTILS =====
+    function esc(str) {
+        if (!str) return '';
+        const d = document.createElement('div');
+        d.textContent = str;
+        return d.innerHTML;
+    }
+
+    function formatDate(ts) {
+        if (!ts) return '-';
+        const d = ts.toDate ? ts.toDate() : new Date(ts);
+        return d.toLocaleDateString('fr-FR') + ' ' + d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function parsePrice(str) {
+        if (!str) return 0;
+        const m = str.toString().replace(',', '.').match(/(\d+\.?\d*)/);
+        return m ? parseFloat(m[1]) : 0;
+    }
+
+    function toCloudinaryDownload(url) {
+        if (!url) return '';
+        return url.replace('/upload/', '/upload/fl_attachment/');
+    }
+
+    function openModal(id) { document.getElementById(id).classList.add('active'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+    // ===== EMAILJS INIT =====
+    if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'VOTRE_PUBLIC_KEY') {
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+    }
+
+    // ===== AUTH =====
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'flex';
+            document.getElementById('adminEmail').textContent = user.email;
+            ensureLightboxExists().then(() => loadDashboard());
+        } else {
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('adminPanel').style.display = 'none';
+        }
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const pwd = document.getElementById('loginPassword').value;
+        document.getElementById('loginError').textContent = '';
+        try {
+            await auth.signInWithEmailAndPassword(email, pwd);
+        } catch (err) {
+            document.getElementById('loginError').textContent = 'Email ou mot de passe incorrect.';
+        }
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        auth.signOut();
+    });
+
+    // ===== NAVIGATION =====
+    document.querySelectorAll('.sidebar-nav .nav-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const view = item.dataset.view;
+            if (!view) return;
+            document.querySelectorAll('.sidebar-nav .nav-item').forEach(n => n.classList.remove('active'));
+            item.classList.add('active');
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById('view-' + view).classList.add('active');
+            const titles = { dashboard: 'Tableau de bord', orders: 'Commandes', products: 'Produits', lightbox: 'Lightbox', messages: 'Messages' };
+            document.getElementById('pageTitle').textContent = titles[view];
+            if (view === 'dashboard') loadDashboard();
+            else if (view === 'orders') loadOrders();
+            else if (view === 'products') loadProducts();
+            else if (view === 'lightbox') loadLightboxConfig();
+            else if (view === 'messages') loadMessages();
+            document.getElementById('sidebar').classList.remove('open');
+        });
+    });
+
+    document.getElementById('sidebarToggle').addEventListener('click', () => {
+        document.getElementById('sidebar').classList.toggle('open');
+    });
+
+    // ===== DASHBOARD =====
+    async function loadDashboard() {
+        try {
+            const [ordersSnap, msgsSnap] = await Promise.all([
+                db.collection('orders').get(),
+                db.collection('messages').get()
+            ]);
+
+            const orders = ordersSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+            const messages = msgsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+            // Stats
+            document.getElementById('statOrders').textContent = orders.length;
+            const newMsgs = messages.filter(m => m.status === 'nouveau').length;
+            document.getElementById('statMessages').textContent = newMsgs;
+
+            const revenue = orders.filter(o => o.status !== 'annule')
+                .reduce((s, o) => s + (o.priceNumeric || 0) * (o.quantity || 1), 0);
+            document.getElementById('statRevenue').textContent = revenue.toFixed(0) + '€';
+
+            const counts = {};
+            orders.forEach(o => { const n = o.productName || '?'; counts[n] = (counts[n] || 0) + 1; });
+            const popular = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+            document.getElementById('statPopular').textContent = popular ? popular[0] : '-';
+
+            // Sidebar counts
+            const newOrders = orders.filter(o => o.status === 'nouveau').length;
+            document.getElementById('ordersCount').textContent = newOrders || '';
+            document.getElementById('messagesCount').textContent = newMsgs || '';
+
+            // Recent orders
+            const recent = orders.sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0)).slice(0, 5);
+            document.getElementById('recentOrders').innerHTML = recent.length ? `
+                <div class="table-responsive"><table class="admin-table">
+                <thead><tr><th>Date</th><th>Client</th><th>Produit</th><th>Statut</th></tr></thead>
+                <tbody>${recent.map(o => `<tr>
+                    <td>${formatDate(o.createdAt)}</td>
+                    <td>${esc(o.customerName)}</td>
+                    <td>${esc(o.productName)}</td>
+                    <td><span class="status-badge status-${o.status}">${STATUS_LABELS[o.status] || o.status}</span></td>
+                </tr>`).join('')}</tbody></table></div>
+            ` : '<div class="empty-state"><span>📦</span>Aucune commande pour le moment</div>';
+
+            // Recent messages
+            const recentMsgs = messages.sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0)).slice(0, 5);
+            document.getElementById('recentMessages').innerHTML = recentMsgs.length ? `
+                <div class="table-responsive"><table class="admin-table">
+                <thead><tr><th>Date</th><th>Nom</th><th>Sujet</th><th>Statut</th></tr></thead>
+                <tbody>${recentMsgs.map(m => `<tr style="${m.status === 'nouveau' ? 'font-weight:600' : ''}">
+                    <td>${formatDate(m.createdAt)}</td>
+                    <td>${esc(m.name)}</td>
+                    <td>${SUBJECT_LABELS[m.subject] || m.subject || '-'}</td>
+                    <td><span class="status-badge status-${m.status}">${STATUS_LABELS[m.status] || m.status}</span></td>
+                </tr>`).join('')}</tbody></table></div>
+            ` : '<div class="empty-state"><span>💬</span>Aucun message pour le moment</div>';
+        } catch (err) {
+            console.error('Dashboard error:', err);
+        }
+    }
+
+    // ===== ORDERS =====
+    async function loadOrders() {
+        const filter = document.getElementById('orderStatusFilter').value;
+        let query = db.collection('orders').orderBy('createdAt', 'desc');
+        if (filter) query = db.collection('orders').where('status', '==', filter);
+
+        const snap = await query.get();
+        const orders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        const tbody = document.getElementById('ordersTableBody');
+
+        if (!orders.length) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-light);">Aucune commande</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = orders.map(o => `<tr>
+            <td>${formatDate(o.createdAt)}</td>
+            <td>${esc(o.customerName)}<br><small style="color:var(--text-light)">${esc(o.customerEmail)}</small></td>
+            <td>${esc(o.productName)}${o.quantity > 1 ? ' x' + o.quantity : ''}</td>
+            <td><strong>${esc(o.price)}</strong></td>
+            <td><span class="status-badge status-${o.status}">${STATUS_LABELS[o.status] || o.status}</span></td>
+            <td><button class="btn-admin-sm" onclick="openOrderDetail('${o.id}')">Voir</button></td>
+        </tr>`).join('');
+    }
+
+    async function openOrderDetail(id) {
+        const doc = await db.collection('orders').doc(id).get();
+        const o = { id: doc.id, ...doc.data() };
+        document.getElementById('orderModalBody').innerHTML = `
+            <div class="detail-row"><span class="detail-label">Client</span><span class="detail-value">${esc(o.customerName)}</span></div>
+            <div class="detail-row"><span class="detail-label">Email</span><span class="detail-value"><a href="mailto:${esc(o.customerEmail)}">${esc(o.customerEmail)}</a></span></div>
+            <div class="detail-row"><span class="detail-label">Produit</span><span class="detail-value">${esc(o.productName)}</span></div>
+            <div class="detail-row"><span class="detail-label">Prix</span><span class="detail-value">${esc(o.price)}</span></div>
+            <div class="detail-row"><span class="detail-label">Quantité</span><span class="detail-value">${o.quantity || 1}</span></div>
+            ${o.specs?.length ? `<div class="detail-row"><span class="detail-label">Specs</span><span class="detail-value">${o.specs.map(s => esc(s)).join('<br>')}</span></div>` : ''}
+            ${o.size ? `<div class="detail-row"><span class="detail-label">Taille</span><span class="detail-value">${esc(o.size)}</span></div>` : ''}
+            ${o.color ? `<div class="detail-row"><span class="detail-label">Couleur</span><span class="detail-value">${esc(o.color)}</span></div>` : ''}
+            ${o.led ? `<div class="detail-row"><span class="detail-label">LED</span><span class="detail-value">${esc(o.led)}</span></div>` : ''}
+            ${o.fichier ? `<div class="detail-row"><span class="detail-label">Fichier</span><span class="detail-value">${esc(o.fichier)} ${o.fileUrl ? `<a href="${toCloudinaryDownload(o.fileUrl)}" target="_blank" style="margin-left:8px;color:var(--primary-dark);font-weight:600;">Télécharger</a> <a href="${esc(o.fileUrl)}" target="_blank" style="margin-left:8px;color:var(--text-light);">Voir</a>` : ''}</span></div>` : ''}
+            ${o.fileUrl ? `<div style="margin:12px 0;"><img src="${esc(o.fileUrl)}" alt="Fichier client" style="max-width:100%;max-height:300px;border-radius:var(--radius-md);border:1px solid var(--medium-gray);cursor:pointer;" onclick="window.open('${esc(o.fileUrl)}')"></div>` : ''}
+            ${o.text ? `<div class="detail-row"><span class="detail-label">Texte</span><span class="detail-value">${esc(o.text)}</span></div>` : ''}
+            <hr style="margin:20px 0;border:none;border-top:1px solid var(--medium-gray);">
+            <div class="admin-form-group">
+                <label>Lien de suivi client</label>
+                <div style="display:flex;gap:8px;align-items:center;">
+                    <input type="text" id="orderTrackingUrl" value="https://site-1-8effa.web.app/suivi.html?id=${esc(o.trackingId || '')}" readonly style="flex:1;background:var(--light-gray);cursor:text;">
+                    <button class="btn-admin-sm" onclick="navigator.clipboard.writeText(document.getElementById('orderTrackingUrl').value);this.textContent='Copié!';setTimeout(()=>this.textContent='Copier',1500)" style="white-space:nowrap;">Copier</button>
+                </div>
+            </div>
+            <div class="admin-form-group" style="display:none;">
+                <input type="hidden" id="orderPaymentLink" value="">
+            </div>
+            <div class="admin-form-group">
+                <label>Statut paiement</label>
+                <select id="orderPaymentStatus">
+                    ${['en_attente','paye'].map(s =>
+                        `<option value="${s}" ${o.paymentStatus === s ? 'selected' : ''}>${PAYMENT_LABELS[s]}</option>`
+                    ).join('')}
+                </select>
+            </div>
+            <div class="admin-form-group">
+                <label>Statut commande</label>
+                <select id="orderStatusSelect">
+                    ${['nouveau','valide','en_cours','fabrique','expedie','livre','annule'].map(s =>
+                        `<option value="${s}" ${o.status === s ? 'selected' : ''}>${STATUS_LABELS[s]}</option>`
+                    ).join('')}
+                </select>
+            </div>
+            <div class="admin-form-group">
+                <label>Notes internes</label>
+                <textarea id="orderNotes">${esc(o.notes || '')}</textarea>
+            </div>
+            <div style="display:flex;gap:12px;">
+                <button class="btn-admin btn-admin-primary" onclick="saveOrderStatus('${o.id}')" style="flex:1;">Sauvegarder</button>
+                <button class="btn-admin" onclick="validateAndNotify('${o.id}','${esc(o.customerEmail)}','${esc(o.customerName)}','${esc(o.productName)}','${esc(o.price)}','${esc(o.trackingId || '')}')" style="flex:1;background:#27ae60;color:white;border:none;">Valider et notifier</button>
+            </div>
+        `;
+        openModal('orderModal');
+    }
+
+    function showToast(icon, title, msg) {
+        document.getElementById('toastIcon').textContent = icon;
+        document.getElementById('toastTitle').textContent = title;
+        document.getElementById('toastMsg').innerHTML = msg;
+        document.getElementById('toastOverlay').classList.add('active');
+    }
+
+    function closeToast() {
+        document.getElementById('toastOverlay').classList.remove('active');
+    }
+
+    document.getElementById('toastOverlay').addEventListener('click', function(e) {
+        if (e.target === this) closeToast();
+    });
+
+    async function saveOrderStatus(id) {
+        try {
+            await db.collection('orders').doc(id).update({
+                status: document.getElementById('orderStatusSelect').value,
+                notes: document.getElementById('orderNotes').value,
+                paymentLink: document.getElementById('orderPaymentLink').value,
+                paymentStatus: document.getElementById('orderPaymentStatus').value
+            });
+            closeModal('orderModal');
+            showToast('✅', 'Commande mise à jour', 'Les modifications ont été enregistrées avec succès.');
+            loadOrders();
+            loadDashboard();
+        } catch (err) {
+            console.error('Erreur sauvegarde:', err);
+            showToast('❌', 'Erreur', 'Impossible de sauvegarder : ' + err.message);
+        }
+    }
+
+    async function validateAndNotify(id, email, name, product, price, trackingId) {
+        const btn = event.target;
+        btn.textContent = 'Validation en cours...';
+        btn.disabled = true;
+
+        try {
+            const paymentLink = 'https://site-1-8effa.web.app/paiement.html?id=' + trackingId;
+            await db.collection('orders').doc(id).update({
+                status: 'valide',
+                paymentStatus: 'en_attente',
+                paymentLink: paymentLink,
+                notes: document.getElementById('orderNotes').value,
+                validatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            const trackingUrl = 'https://site-1-8effa.web.app/suivi.html?id=' + trackingId;
+
+            let emailSent = false;
+            if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'VOTRE_PUBLIC_KEY') {
+                try {
+                    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+                        to_name: name,
+                        to_email: email,
+                        product_name: product,
+                        price: price,
+                        tracking_url: trackingUrl
+                    });
+                    emailSent = true;
+                } catch (err) {
+                    console.error('Erreur EmailJS:', err);
+                }
+            }
+
+            closeModal('orderModal');
+
+            const emailInfo = emailSent
+                ? 'Un email de notification a été envoyé à <strong>' + esc(email) + '</strong>.'
+                : 'Envoyez ce lien de suivi au client :<br><br><strong style="word-break:break-all;">' + trackingUrl + '</strong>';
+
+            showToast('🎉', 'Commande validée avec succès !',
+                'La commande de <strong>' + esc(name) + '</strong> pour <strong>' + esc(product) + '</strong> a été validée.<br><br>' +
+                'Le client peut maintenant voir le statut mis à jour et procéder au paiement.<br><br>' +
+                emailInfo
+            );
+
+            loadOrders();
+            loadDashboard();
+        } catch (err) {
+            console.error('Erreur validation:', err);
+            btn.textContent = 'Valider et notifier';
+            btn.disabled = false;
+            showToast('❌', 'Erreur de validation', 'Impossible de valider la commande : ' + err.message);
+        }
+    }
+
+    // ===== PRODUCTS =====
+    async function loadProducts() {
+        const snap = await db.collection('products').orderBy('sortOrder').get();
+        const products = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        const grid = document.getElementById('productsGrid');
+
+        if (!products.length) {
+            grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><span>🛍️</span>Aucun produit. Cliquez sur "+ Ajouter" ou initialisez le catalogue.<br><br><button class="btn-admin btn-admin-primary" onclick="seedProducts()">Initialiser le catalogue</button></div>';
+            return;
+        }
+
+        grid.innerHTML = products.map(p => `
+            <div class="product-admin-card">
+                <div class="product-admin-image">
+                    ${p.images?.[0] ? `<img src="${esc(p.images[0])}" alt="${esc(p.name)}">` : '🖼️'}
+                </div>
+                <div class="product-admin-info">
+                    <span class="product-admin-category">${CATEGORY_LABELS[p.category] || p.category}</span>
+                    <h4>${esc(p.name)} ${p.active === false ? '<span style="color:var(--accent);font-size:12px;">(Inactif)</span>' : ''}</h4>
+                    <div class="product-admin-price">${esc(p.price)}</div>
+                    <div class="product-admin-actions">
+                        <button class="btn-admin-sm" onclick="editProduct('${p.id}')">Modifier</button>
+                        <button class="btn-admin-sm btn-danger" onclick="deleteProduct('${p.id}','${esc(p.name)}')">Supprimer</button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function openProductModal(productId) {
+        currentEditProductId = null;
+        document.getElementById('productModalTitle').textContent = 'Ajouter un produit';
+        document.getElementById('productForm').reset();
+        document.getElementById('prodActive').checked = true;
+        openModal('productModal');
+    }
+
+    async function editProduct(id) {
+        const doc = await db.collection('products').doc(id).get();
+        const p = doc.data();
+        currentEditProductId = id;
+        document.getElementById('productModalTitle').textContent = 'Modifier le produit';
+        document.getElementById('prodName').value = p.name || '';
+        document.getElementById('prodCategory').value = p.category || 'decoration';
+        document.getElementById('prodDescription').value = p.description || '';
+        document.getElementById('prodPrice').value = p.priceNumeric || 0;
+        document.getElementById('prodPriceDisplay').value = p.price || '';
+        document.getElementById('prodFeatures').value = (p.features || []).join('\n');
+        document.getElementById('prodImages').value = (p.images || []).join(', ');
+        document.getElementById('prodBadge').value = p.badge || '';
+        document.getElementById('prodUrl').value = p.makerWorldUrl || '';
+        document.getElementById('prodActive').checked = p.active !== false;
+        openModal('productModal');
+    }
+
+    async function saveProduct(e) {
+        e.preventDefault();
+        const data = {
+            name: document.getElementById('prodName').value.trim(),
+            category: document.getElementById('prodCategory').value,
+            description: document.getElementById('prodDescription').value.trim(),
+            priceNumeric: parseFloat(document.getElementById('prodPrice').value) || 0,
+            price: document.getElementById('prodPriceDisplay').value.trim() || ('À partir de ' + document.getElementById('prodPrice').value + '€'),
+            features: document.getElementById('prodFeatures').value.split('\n').filter(f => f.trim()),
+            images: document.getElementById('prodImages').value.split(',').map(s => s.trim()).filter(Boolean),
+            badge: document.getElementById('prodBadge').value || null,
+            makerWorldUrl: document.getElementById('prodUrl').value.trim() || '',
+            active: document.getElementById('prodActive').checked,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        if (currentEditProductId) {
+            await db.collection('products').doc(currentEditProductId).update(data);
+        } else {
+            data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+            data.sortOrder = Date.now();
+            await db.collection('products').add(data);
+        }
+        closeModal('productModal');
+        loadProducts();
+    }
+
+    async function deleteProduct(id, name) {
+        if (confirm('Supprimer "' + name + '" ? Cette action est irréversible.')) {
+            await db.collection('products').doc(id).delete();
+            loadProducts();
+        }
+    }
+
+    // Seed initial products from the current catalog
+    async function seedProducts() {
+        const existing = await db.collection('products').limit(1).get();
+        if (!existing.empty) { alert('Le catalogue contient déjà des produits.'); return; }
+
+        const products = [
+            { name: "Lightbox Personnalisée", category: "lightbox", description: "Transformez votre photo préférée en une magnifique lampe LED rétroéclairée. Le cadeau parfait pour immortaliser vos souvenirs.", priceNumeric: 39.99, price: "À partir de 39,99€", features: ["Photo transformée en lithophane","LED longue durée (50 000h)","4 tailles : S, M, L, XL","3 couleurs de cadre : noir, blanc, bois","Éclairage blanc chaud, froid ou RGB","Alimentation USB ou secteur"], images: ["lightbox-exemple-1.png","lightbox-exemple-2.png"], badge: "Best-seller", makerWorldUrl: "", active: true, sortOrder: 0 },
+            { name: "Vase Géométrique", category: "decoration", description: "Vase moderne aux formes géométriques, parfait pour vos fleurs séchées ou comme pièce décorative.", priceNumeric: 18, price: "À partir de 18€", features: ["Filament PLA+ haute qualité","Buse 0.4 mm - résolution fine","Plusieurs tailles disponibles","Choix de couleurs","Finition mate ou brillante"], images: ["vase-geometrique-1.png","vase-geometrique-2.png"], badge: "Populaire", makerWorldUrl: "https://makerworld.com", active: true, sortOrder: 1 },
+            { name: "Bougeoir Design", category: "decoration", description: "Bougeoir élégant au design contemporain pour créer une ambiance chaleureuse.", priceNumeric: 12, price: "À partir de 12€", features: ["Filament PETG résistant à la chaleur","Buse 0.4 mm - finition soignée","Compatible bougies standard","Design stable et sécurisé","Personnalisation possible"], images: ["bougeoir-design-1.png"], badge: null, makerWorldUrl: "https://makerworld.com", active: true, sortOrder: 2 },
+            { name: "Lampe Lune", category: "decoration", description: "Reproduction fidèle de la surface lunaire avec relief réaliste et éclairage LED intégré.", priceNumeric: 29, price: "À partir de 29€", features: ["Filament PLA blanc translucide","Buse 0.2 mm - ultra détaillé","Relief lunaire réaliste","LED tactile (3 intensités)","Rechargeable USB"], images: ["lampe-lune.png","lampe-lune-2.png"], badge: "Nouveau", makerWorldUrl: "https://makerworld.com", active: true, sortOrder: 3 },
+            { name: "Figurine Personnalisée", category: "figurines", description: "Créez votre propre figurine personnalisée à partir de vos photos ou descriptions.", priceNumeric: 45, price: "À partir de 45€", features: ["Filament PLA+ ou résine selon le détail","Buse 0.2 mm - précision maximale","Modélisation sur mesure","Peinture à la main","Plusieurs tailles"], images: ["figurine.png","figurine-2.png"], badge: "Best-seller", makerWorldUrl: "https://makerworld.com", active: true, sortOrder: 4 },
+            { name: "Accessoires JDR", category: "figurines", description: "Tours à dés, boîtes de rangement et accessoires pour vos sessions de jeu de rôle.", priceNumeric: 15, price: "À partir de 15€", features: ["Filament PLA+ robuste","Buse 0.4 mm - rendu net","Designs variés","Fonctionnel et esthétique","Personnalisation du nom"], images: ["accessoires-jdr.png","accessoires-jdr-2.png"], badge: null, makerWorldUrl: "https://makerworld.com", active: true, sortOrder: 5 },
+            { name: "Support Manette", category: "figurines", description: "Support élégant pour exposer et ranger vos manettes de jeu.", priceNumeric: 20, price: "À partir de 20€", features: ["Filament PETG solide et durable","Buse 0.4 mm - finition lisse","Compatible toutes manettes","Design gaming","Option LED intégrée"], images: ["support-manette.png","support-manette-2.png"], badge: null, makerWorldUrl: "https://makerworld.com", active: true, sortOrder: 6 },
+            { name: "Support Téléphone", category: "bureau", description: "Support ergonomique pour smartphone, parfait pour le bureau ou la table de nuit.", priceNumeric: 10, price: "À partir de 10€", features: ["Filament PLA+ résistant","Buse 0.4 mm - rendu propre","Angle de vue optimal","Compatible tous modèles","Trou pour câble de charge"], images: ["support-telephone.png","support-telephone-2.png"], badge: null, makerWorldUrl: "https://makerworld.com", active: true, sortOrder: 7 },
+            { name: "Pot à Crayons", category: "bureau", description: "Organisateur de bureau au design unique pour garder vos stylos et fournitures à portée de main.", priceNumeric: 12, price: "À partir de 12€", features: ["Filament PLA+ haute qualité","Buse 0.4 mm - détails nets","Plusieurs compartiments","Designs créatifs","Personnalisation initiales"], images: ["pot-crayon.png","pot-crayon-2.png"], badge: "Populaire", makerWorldUrl: "https://makerworld.com", active: true, sortOrder: 8 },
+            { name: "Support Casque", category: "bureau", description: "Support élégant et robuste pour votre casque audio ou gaming.", priceNumeric: 15, price: "À partir de 15€", features: ["Filament PETG solide et durable","Buse 0.4 mm - structure renforcée","Design minimaliste","Base stable et large","Plusieurs coloris"], images: ["support-casque.png","support-casque-2.png"], badge: null, makerWorldUrl: "https://makerworld.com", active: true, sortOrder: 9 }
+        ];
+
+        const batch = db.batch();
+        products.forEach(p => {
+            const ref = db.collection('products').doc();
+            batch.set(ref, { ...p, createdAt: firebase.firestore.FieldValue.serverTimestamp(), updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
+        });
+        await batch.commit();
+        alert('Catalogue initialisé avec ' + products.length + ' produits !');
+        loadProducts();
+    }
+
+    // ===== MESSAGES =====
+    async function loadMessages() {
+        const filter = document.getElementById('messageStatusFilter').value;
+        let query = db.collection('messages').orderBy('createdAt', 'desc');
+        if (filter) query = db.collection('messages').where('status', '==', filter);
+
+        const snap = await query.get();
+        const messages = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        const tbody = document.getElementById('messagesTableBody');
+
+        if (!messages.length) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-light);">Aucun message</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = messages.map(m => `<tr style="${m.status === 'nouveau' ? 'font-weight:600' : ''}">
+            <td>${formatDate(m.createdAt)}</td>
+            <td>${esc(m.name)}</td>
+            <td><a href="mailto:${esc(m.email)}">${esc(m.email)}</a></td>
+            <td>${SUBJECT_LABELS[m.subject] || m.subject || '-'}</td>
+            <td><span class="status-badge status-${m.status}">${STATUS_LABELS[m.status] || m.status}</span></td>
+            <td><button class="btn-admin-sm" onclick="openMessageDetail('${m.id}')">Voir</button></td>
+        </tr>`).join('');
+    }
+
+    async function openMessageDetail(id) {
+        const doc = await db.collection('messages').doc(id).get();
+        const m = { id: doc.id, ...doc.data() };
+
+        // Auto-mark as lu
+        if (m.status === 'nouveau') {
+            await db.collection('messages').doc(id).update({ status: 'lu' });
+            m.status = 'lu';
+            loadDashboard();
+        }
+
+        const filamentLabels = { pla: 'PLA', 'pla+': 'PLA+', petg: 'PETG', abs: 'ABS', tpu: 'TPU', conseil: 'Demande conseil' };
+        const buseLabels = { '0.2': '0.2 mm', '0.4': '0.4 mm', '0.6': '0.6 mm', '0.8': '0.8 mm', conseil: 'Demande conseil' };
+
+        let orderHtml = '';
+        if (m.orderData) {
+            orderHtml = `<div style="background:var(--light-gray);padding:16px;border-radius:var(--radius-md);margin:16px 0;">
+                <strong>Commande associée :</strong><br>
+                ${esc(m.orderData.produit || m.orderData.productName || 'Lightbox')} — ${esc(m.orderData.prix || m.orderData.price || '')}
+                ${m.orderData.specs ? '<br><small>' + m.orderData.specs.map(s => esc(s)).join(' • ') + '</small>' : ''}
+                ${m.orderData.fichier || m.orderData.fileName ? '<br><small>Fichier : ' + esc(m.orderData.fichier || m.orderData.fileName) + (m.orderData.fileUrl ? ' <a href="' + esc(m.orderData.fileUrl) + '" target="_blank" download style="color:var(--primary-dark);font-weight:600;">Télécharger</a>' : '') + '</small>' : ''}
+            </div>`;
+        }
+
+        document.getElementById('messageModalBody').innerHTML = `
+            <div class="detail-row"><span class="detail-label">Nom</span><span class="detail-value">${esc(m.name)}</span></div>
+            <div class="detail-row"><span class="detail-label">Email</span><span class="detail-value"><a href="mailto:${esc(m.email)}">${esc(m.email)}</a></span></div>
+            <div class="detail-row"><span class="detail-label">Sujet</span><span class="detail-value">${SUBJECT_LABELS[m.subject] || m.subject || '-'}</span></div>
+            ${m.filament ? `<div class="detail-row"><span class="detail-label">Filament</span><span class="detail-value">${filamentLabels[m.filament] || m.filament}</span></div>` : ''}
+            ${m.buse ? `<div class="detail-row"><span class="detail-label">Buse</span><span class="detail-value">${buseLabels[m.buse] || m.buse}</span></div>` : ''}
+            ${m.budget ? `<div class="detail-row"><span class="detail-label">Budget</span><span class="detail-value">${esc(m.budget)}</span></div>` : ''}
+            <div class="detail-message">${esc(m.message)}</div>
+            ${orderHtml}
+            <hr style="margin:20px 0;border:none;border-top:1px solid var(--medium-gray);">
+            <div class="admin-form-group">
+                <label>Statut</label>
+                <select id="msgStatusSelect">
+                    ${['nouveau','lu','repondu','archive'].map(s =>
+                        `<option value="${s}" ${m.status === s ? 'selected' : ''}>${STATUS_LABELS[s]}</option>`
+                    ).join('')}
+                </select>
+            </div>
+            <div class="admin-form-group">
+                <label>Notes internes</label>
+                <textarea id="msgNotes">${esc(m.notes || '')}</textarea>
+            </div>
+            <button class="btn-admin btn-admin-primary" onclick="saveMessageStatus('${m.id}')" style="width:100%;">Sauvegarder</button>
+        `;
+        openModal('messageModal');
+    }
+
+    async function saveMessageStatus(id) {
+        await db.collection('messages').doc(id).update({
+            status: document.getElementById('msgStatusSelect').value,
+            notes: document.getElementById('msgNotes').value
+        });
+        closeModal('messageModal');
+        loadMessages();
+        loadDashboard();
+    }
+
+    // ===== LIGHTBOX CONFIG =====
+    let lbSizes = [];
+    let lbColors = [];
+    let lbLeds = [];
+
+    async function loadLightboxConfig() {
+        const doc = await db.collection('config').doc('lightbox').get();
+        if (doc.exists) {
+            const data = doc.data();
+            document.getElementById('lbName').value = data.name || 'Lightbox Personnalisée';
+            document.getElementById('lbDescription').value = data.description || '';
+            document.getElementById('lbBadge').value = data.badge || '';
+            document.getElementById('lbOriginalPrice').value = data.originalPrice || '69,99€';
+            document.getElementById('lbDiscount').value = data.discount || '-29%';
+            document.getElementById('lbImages').value = (data.images || []).join(', ');
+            lbSizes = data.sizes || [];
+            lbColors = data.colors || [];
+            lbLeds = data.leds || [];
+        } else {
+            // Valeurs par défaut depuis lightbox.html
+            lbSizes = [
+                { label: 'S', dim: '15 x 20 cm', price: 39.99 },
+                { label: 'M', dim: '20 x 25 cm', price: 49.99 },
+                { label: 'L', dim: '25 x 30 cm', price: 64.99 },
+                { label: 'XL', dim: '30 x 40 cm', price: 89.99 }
+            ];
+            lbColors = [
+                { name: 'Noir', hex: '#1a1a1a' },
+                { name: 'Blanc', hex: '#f5f5f5' },
+                { name: 'Gris', hex: '#808080' },
+                { name: 'Bois clair', hex: '#D2B48C' },
+                { name: 'Bois foncé', hex: '#8B4513' },
+                { name: 'Rouge', hex: '#C0392B' },
+                { name: 'Bleu nuit', hex: '#1B2631' },
+                { name: 'Bleu ciel', hex: '#5DADE2' },
+                { name: 'Vert forêt', hex: '#1E8449' },
+                { name: 'Vert sauge', hex: '#A9B9A3' },
+                { name: 'Rose', hex: '#E8A0BF' },
+                { name: 'Violet', hex: '#7D3C98' },
+                { name: 'Jaune moutarde', hex: '#D4AC0D' },
+                { name: 'Orange', hex: '#E67E22' },
+                { name: 'Beige', hex: '#C7ADA5' },
+                { name: 'Bordeaux', hex: '#78281F' },
+                { name: 'Turquoise', hex: '#1ABC9C' },
+                { name: 'Or', hex: '#D4AF37' },
+                { name: 'Argent', hex: '#C0C0C0' },
+                { name: 'Cuivre', hex: '#B87333' }
+            ];
+            lbLeds = [
+                { name: 'Blanc chaud', extra: 0 },
+                { name: 'Blanc froid', extra: 0 },
+                { name: 'RGB', extra: 10 }
+            ];
+        }
+        renderLbSizes();
+        renderLbColors();
+        renderLbLeds();
+    }
+
+    function renderLbSizes() {
+        document.getElementById('lbSizesBody').innerHTML = lbSizes.map((s, i) => `<tr>
+            <td><input type="text" value="${esc(s.label)}" onchange="lbSizes[${i}].label=this.value" style="width:60px;padding:6px;border:1px solid var(--medium-gray);border-radius:4px;font-family:inherit;"></td>
+            <td><input type="text" value="${esc(s.dim)}" onchange="lbSizes[${i}].dim=this.value" style="width:120px;padding:6px;border:1px solid var(--medium-gray);border-radius:4px;font-family:inherit;"></td>
+            <td><input type="number" value="${s.price}" step="0.01" onchange="lbSizes[${i}].price=parseFloat(this.value)" style="width:80px;padding:6px;border:1px solid var(--medium-gray);border-radius:4px;font-family:inherit;"></td>
+            <td><button class="btn-admin-sm btn-danger" onclick="lbSizes.splice(${i},1);renderLbSizes();">Suppr.</button></td>
+        </tr>`).join('');
+    }
+
+    function addLbSize() {
+        lbSizes.push({ label: '', dim: '', price: 0 });
+        renderLbSizes();
+    }
+
+    function renderLbColors() {
+        document.getElementById('lbColorsBody').innerHTML = lbColors.map((c, i) => `<tr>
+            <td><input type="text" value="${esc(c.name)}" onchange="lbColors[${i}].name=this.value" style="width:100px;padding:6px;border:1px solid var(--medium-gray);border-radius:4px;font-family:inherit;"></td>
+            <td><div style="display:flex;align-items:center;gap:8px;"><input type="color" value="${c.hex}" onchange="lbColors[${i}].hex=this.value" style="width:40px;height:32px;border:none;cursor:pointer;"><span style="font-size:12px;color:var(--text-light);">${esc(c.hex)}</span></div></td>
+            <td><button class="btn-admin-sm btn-danger" onclick="lbColors.splice(${i},1);renderLbColors();">Suppr.</button></td>
+        </tr>`).join('');
+    }
+
+    function addLbColor() {
+        lbColors.push({ name: '', hex: '#000000' });
+        renderLbColors();
+    }
+
+    function renderLbLeds() {
+        document.getElementById('lbLedsBody').innerHTML = lbLeds.map((l, i) => `<tr>
+            <td><input type="text" value="${esc(l.name)}" onchange="lbLeds[${i}].name=this.value" style="width:140px;padding:6px;border:1px solid var(--medium-gray);border-radius:4px;font-family:inherit;"></td>
+            <td><input type="number" value="${l.extra}" step="1" onchange="lbLeds[${i}].extra=parseFloat(this.value)||0" style="width:80px;padding:6px;border:1px solid var(--medium-gray);border-radius:4px;font-family:inherit;"></td>
+            <td><button class="btn-admin-sm btn-danger" onclick="lbLeds.splice(${i},1);renderLbLeds();">Suppr.</button></td>
+        </tr>`).join('');
+    }
+
+    function addLbLed() {
+        lbLeds.push({ name: '', extra: 0 });
+        renderLbLeds();
+    }
+
+    async function saveLightboxConfig() {
+        const data = {
+            name: document.getElementById('lbName').value.trim(),
+            description: document.getElementById('lbDescription').value.trim(),
+            badge: document.getElementById('lbBadge').value,
+            originalPrice: document.getElementById('lbOriginalPrice').value.trim(),
+            discount: document.getElementById('lbDiscount').value.trim(),
+            images: document.getElementById('lbImages').value.split(',').map(s => s.trim()).filter(Boolean),
+            sizes: lbSizes,
+            colors: lbColors,
+            leds: lbLeds,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+        await db.collection('config').doc('lightbox').set(data, { merge: true });
+        alert('Configuration Lightbox sauvegardée !');
+    }
+
+    // Auto-add Lightbox if missing
+    async function ensureLightboxExists() {
+        const snap = await db.collection('products').where('category', '==', 'lightbox').limit(1).get();
+        if (snap.empty) {
+            await db.collection('products').add({
+                name: "Lightbox Personnalisée", category: "lightbox",
+                description: "Transformez votre photo préférée en une magnifique lampe LED rétroéclairée. Le cadeau parfait pour immortaliser vos souvenirs.",
+                priceNumeric: 39.99, price: "À partir de 39,99€",
+                features: ["Photo transformée en lithophane","LED longue durée (50 000h)","4 tailles : S, M, L, XL","3 couleurs de cadre : noir, blanc, bois","Éclairage blanc chaud, froid ou RGB","Alimentation USB ou secteur"],
+                images: ["lightbox-exemple-1.png","lightbox-exemple-2.png"],
+                badge: "Best-seller", makerWorldUrl: "", active: true, sortOrder: 0,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+        }
+    }
+
+    // Close modals on backdrop click
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.classList.remove('active');
+        });
+    });
+    </script>
+</body>
+</html>

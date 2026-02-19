@@ -1,0 +1,9 @@
+{
+  "name": "tommy3d-api",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "stripe": "^14.0.0",
+    "firebase-admin": "^12.0.0"
+  }
+}
