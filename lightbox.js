@@ -68,38 +68,14 @@ document.querySelectorAll('input[name="shape"]').forEach(input => {
     });
 });
 
-// Gestion des couleurs (dropdown custom)
-const colorPicker = document.getElementById('colorPicker');
-const colorPickerBtn = document.getElementById('colorPickerBtn');
-const colorPickerDropdown = document.getElementById('colorPickerDropdown');
-const colorSwatch = document.getElementById('colorSwatch');
-const colorPickerLabel = document.getElementById('colorPickerLabel');
-
-colorPickerBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    colorPicker.classList.toggle('open');
-});
-
-colorPickerDropdown.querySelectorAll('.color-option').forEach(option => {
-    option.addEventListener('click', () => {
-        const value = option.dataset.value;
-        const color = option.dataset.color;
-        const label = option.querySelector('span:last-child').textContent;
-
-        config.color = value;
-        colorSwatch.style.background = color;
-        colorPickerLabel.textContent = label;
-
-        colorPickerDropdown.querySelectorAll('.color-option').forEach(o => o.classList.remove('active'));
-        option.classList.add('active');
-
-        colorPicker.classList.remove('open');
-        updateLightboxPreview();
-    });
-});
-
-document.addEventListener('click', () => {
-    colorPicker.classList.remove('open');
+// Gestion des couleurs (menu déroulant)
+const colorSelect = document.getElementById('colorSelect');
+const colorPreviewDot = document.getElementById('colorPreviewDot');
+colorSelect.addEventListener('change', (e) => {
+    config.color = e.target.value;
+    const selectedOption = e.target.options[e.target.selectedIndex];
+    colorPreviewDot.style.background = selectedOption.getAttribute('data-color');
+    updateLightboxPreview();
 });
 
 // Gestion des LED
