@@ -501,8 +501,48 @@
                 </div>
             </div>
 
+            <!-- Calculateur de prix -->
+            <div class="price-calculator" style="margin-top: 80px;">
+                <div class="section-header">
+                    <span class="section-badge">Devis instantané</span>
+                    <h2>Calculez le prix de votre pièce</h2>
+                    <p>Entrez le poids estimé de votre impression pour obtenir un prix immédiat</p>
+                </div>
+                <div class="calculator-box">
+                    <div class="calc-input-group">
+                        <label for="weightInput">Poids de la pièce (grammes)</label>
+                        <div class="calc-input-row">
+                            <input type="number" id="weightInput" placeholder="Ex : 150" min="1" max="5000" step="1">
+                            <span class="calc-unit">g</span>
+                        </div>
+                        <input type="range" id="weightSlider" min="1" max="1000" value="100" step="1" class="calc-slider">
+                        <div class="calc-slider-labels">
+                            <span>1 g</span>
+                            <span>500 g</span>
+                            <span>1 kg</span>
+                        </div>
+                    </div>
+                    <div class="calc-result">
+                        <div class="calc-result-line">
+                            <span>Impression 3D</span>
+                            <span id="calcBase">—</span>
+                        </div>
+                        <div class="calc-result-line">
+                            <span>Livraison estimée</span>
+                            <span id="calcShipping">—</span>
+                        </div>
+                        <div class="calc-result-total">
+                            <span>Total estimé</span>
+                            <span id="calcTotal">—</span>
+                        </div>
+                        <p class="calc-note">0,80€ / gramme • TVA incluse • Tarif indicatif</p>
+                        <a href="contact.html" class="btn btn-primary btn-lg" id="calcCTA" style="display:none; width:100%; margin-top:16px;">Commander cette pièce</a>
+                    </div>
+                </div>
+            </div>
+
             <!-- Custom Order CTA -->
-            <div class="custom-order-cta" style="margin-top: 80px; text-align: center; padding: 60px 40px; background: var(--light-gray); border-radius: 24px;">
+            <div class="custom-order-cta" style="margin-top: 60px; text-align: center; padding: 60px 40px; background: var(--light-gray); border-radius: 24px;">
                 <h2 style="margin-bottom: 16px;">Vous avez une idée en tête ?</h2>
                 <p style="color: var(--text-light); margin-bottom: 32px; max-width: 500px; margin-left: auto; margin-right: auto;">Je peux créer une pièce sur mesure selon vos envies. Décrivez-moi votre projet et je vous ferai un devis personnalisé.</p>
                 <a href="contact.html" class="btn btn-primary btn-lg">Demander un devis personnalisé</a>
@@ -789,6 +829,53 @@
         localStorage.setItem('productOrder', JSON.stringify(commande));
         window.location.href = 'contact.html';
     }
+
+    // ===== Calculateur de prix =====
+    const PRICE_PER_GRAM = 0.80;
+
+    function calcShipping(grams) {
+        if (grams <= 100) return 4.90;
+        if (grams <= 300) return 6.90;
+        if (grams <= 600) return 9.90;
+        return 14.90;
+    }
+
+    function formatEur(val) {
+        return val.toFixed(2).replace('.', ',') + '€';
+    }
+
+    function updateCalc(grams) {
+        const g = parseInt(grams);
+        if (!g || g < 1) {
+            document.getElementById('calcBase').textContent = '—';
+            document.getElementById('calcShipping').textContent = '—';
+            document.getElementById('calcTotal').textContent = '—';
+            document.getElementById('calcCTA').style.display = 'none';
+            return;
+        }
+        const base = g * PRICE_PER_GRAM;
+        const shipping = calcShipping(g);
+        const total = base + shipping;
+
+        document.getElementById('calcBase').textContent = formatEur(base);
+        document.getElementById('calcShipping').textContent = formatEur(shipping);
+        document.getElementById('calcTotal').textContent = formatEur(total);
+        document.getElementById('calcCTA').style.display = 'flex';
+    }
+
+    const weightInput = document.getElementById('weightInput');
+    const weightSlider = document.getElementById('weightSlider');
+
+    weightInput.addEventListener('input', () => {
+        const v = Math.min(parseInt(weightInput.value) || 0, 5000);
+        weightSlider.value = Math.min(v, 1000);
+        updateCalc(v);
+    });
+
+    weightSlider.addEventListener('input', () => {
+        weightInput.value = weightSlider.value;
+        updateCalc(weightSlider.value);
+    });
 
     // Drag and drop support
     document.addEventListener('DOMContentLoaded', function() {
