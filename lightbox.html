@@ -187,29 +187,35 @@
 
                     <div class="config-section">
                         <h3>3. Couleur du cadre</h3>
-                        <select id="colorSelect" name="color" class="color-dropdown">
-                            <option value="noir" data-color="#1a1a1a" selected>Noir</option>
-                            <option value="blanc" data-color="#f5f5f5">Blanc</option>
-                            <option value="gris" data-color="#808080">Gris</option>
-                            <option value="bois-clair" data-color="#D2B48C">Bois clair</option>
-                            <option value="bois-fonce" data-color="#8B4513">Bois fonc&#233;</option>
-                            <option value="rouge" data-color="#C0392B">Rouge</option>
-                            <option value="bleu-nuit" data-color="#1B2631">Bleu nuit</option>
-                            <option value="bleu-ciel" data-color="#5DADE2">Bleu ciel</option>
-                            <option value="vert-foret" data-color="#1E8449">Vert for&#234;t</option>
-                            <option value="vert-sauge" data-color="#A9B9A3">Vert sauge</option>
-                            <option value="rose" data-color="#E8A0BF">Rose</option>
-                            <option value="violet" data-color="#7D3C98">Violet</option>
-                            <option value="jaune-moutarde" data-color="#D4AC0D">Moutarde</option>
-                            <option value="orange" data-color="#E67E22">Orange</option>
-                            <option value="beige" data-color="#C7ADA5">Beige</option>
-                            <option value="bordeaux" data-color="#78281F">Bordeaux</option>
-                            <option value="turquoise" data-color="#1ABC9C">Turquoise</option>
-                            <option value="or" data-color="#D4AF37">Or</option>
-                            <option value="argent" data-color="#C0C0C0">Argent</option>
-                            <option value="cuivre" data-color="#B87333">Cuivre</option>
-                        </select>
-                        <div class="color-preview-dot" id="colorPreviewDot" style="background:#1a1a1a;"></div>
+                        <div class="color-picker" id="colorPicker">
+                            <button type="button" class="color-picker-btn" id="colorPickerBtn">
+                                <span class="color-swatch" id="colorSwatch" style="background:#1a1a1a;"></span>
+                                <span class="color-picker-label" id="colorPickerLabel">Noir</span>
+                                <span class="color-picker-arrow">▾</span>
+                            </button>
+                            <div class="color-picker-dropdown" id="colorPickerDropdown">
+                                <div class="color-option active" data-value="noir" data-color="#1a1a1a"><span class="color-swatch" style="background:#1a1a1a;"></span><span>Noir</span></div>
+                                <div class="color-option" data-value="blanc" data-color="#f5f5f5"><span class="color-swatch" style="background:#f5f5f5; border-color:#ccc;"></span><span>Blanc</span></div>
+                                <div class="color-option" data-value="gris" data-color="#808080"><span class="color-swatch" style="background:#808080;"></span><span>Gris</span></div>
+                                <div class="color-option" data-value="bois-clair" data-color="#D2B48C"><span class="color-swatch" style="background:#D2B48C;"></span><span>Bois clair</span></div>
+                                <div class="color-option" data-value="bois-fonce" data-color="#8B4513"><span class="color-swatch" style="background:#8B4513;"></span><span>Bois foncé</span></div>
+                                <div class="color-option" data-value="rouge" data-color="#C0392B"><span class="color-swatch" style="background:#C0392B;"></span><span>Rouge</span></div>
+                                <div class="color-option" data-value="bleu-nuit" data-color="#1B2631"><span class="color-swatch" style="background:#1B2631;"></span><span>Bleu nuit</span></div>
+                                <div class="color-option" data-value="bleu-ciel" data-color="#5DADE2"><span class="color-swatch" style="background:#5DADE2;"></span><span>Bleu ciel</span></div>
+                                <div class="color-option" data-value="vert-foret" data-color="#1E8449"><span class="color-swatch" style="background:#1E8449;"></span><span>Vert forêt</span></div>
+                                <div class="color-option" data-value="vert-sauge" data-color="#A9B9A3"><span class="color-swatch" style="background:#A9B9A3;"></span><span>Vert sauge</span></div>
+                                <div class="color-option" data-value="rose" data-color="#E8A0BF"><span class="color-swatch" style="background:#E8A0BF;"></span><span>Rose</span></div>
+                                <div class="color-option" data-value="violet" data-color="#7D3C98"><span class="color-swatch" style="background:#7D3C98;"></span><span>Violet</span></div>
+                                <div class="color-option" data-value="jaune-moutarde" data-color="#D4AC0D"><span class="color-swatch" style="background:#D4AC0D;"></span><span>Moutarde</span></div>
+                                <div class="color-option" data-value="orange" data-color="#E67E22"><span class="color-swatch" style="background:#E67E22;"></span><span>Orange</span></div>
+                                <div class="color-option" data-value="beige" data-color="#C7ADA5"><span class="color-swatch" style="background:#C7ADA5;"></span><span>Beige</span></div>
+                                <div class="color-option" data-value="bordeaux" data-color="#78281F"><span class="color-swatch" style="background:#78281F;"></span><span>Bordeaux</span></div>
+                                <div class="color-option" data-value="turquoise" data-color="#1ABC9C"><span class="color-swatch" style="background:#1ABC9C;"></span><span>Turquoise</span></div>
+                                <div class="color-option" data-value="or" data-color="#D4AF37"><span class="color-swatch" style="background:#D4AF37;"></span><span>Or</span></div>
+                                <div class="color-option" data-value="argent" data-color="#C0C0C0"><span class="color-swatch" style="background:#C0C0C0;"></span><span>Argent</span></div>
+                                <div class="color-option" data-value="cuivre" data-color="#B87333"><span class="color-swatch" style="background:#B87333;"></span><span>Cuivre</span></div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="config-section">
